@@ -297,7 +297,6 @@ async function tick() {
   try {
     const result = await handler(job);
     if (!result) {
-      // Cancelled part-way through; the row already says so.
       return;
     }
     await jobs.succeed(job.id, {
@@ -336,7 +335,7 @@ export function startWorker() {
     }
   };
   timer = setInterval(loop, POLL_MS);
-  timer.unref?.(); // never hold the process open on the worker's account
+  timer.unref?.(); 
   console.log(`[worker] polling every ${POLL_MS}ms`);
 }
 
