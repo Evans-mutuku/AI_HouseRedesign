@@ -48,3 +48,36 @@ export function formatRelative(iso) {
 
 export const pluralize = (n, one, many = `${one}s`) =>
   `${n} ${n === 1 ? one : many}`;
+
+/**
+ * Money, from minor units. Every amount in the product is carried in cents so
+ * nothing ever accumulates float error; this is the only place it becomes a
+ * string. Whole amounts drop the decimals — "$1,040" reads better than
+ * "$1,040.00" on a plan you are skimming.
+ */
+export function formatMoney(cents, currency = 'USD') {
+  const amount = Number(cents || 0) / 100;
+  const whole = Number.isInteger(amount);
+  try {
+    return amount.toLocaleString(undefined, {
+      style: 'currency',
+      currency,
+      minimumFractionDigits: whole ? 0 : 2,
+      maximumFractionDigits: whole ? 0 : 2,
+    });
+  } catch {
+    // Unknown currency code — show the number and the code rather than throwing.
+    return `${amount.toFixed(whole ? 0 : 2)} ${currency}`;
+  }
+}
+
+/** Parse what someone typed into a budget box into cents. */
+export function parseMoneyToCents(input) {
+  const cleaned = String(input ?? '').replace(/[^0-9.]/g, '');
+  if (!cleaned) return null;
+  const amount = Number(cleaned);
+  if (!Number.isFinite(amount) || amount <= 0) return null;
+  return Math.round(amount * 100);
+}
+
+export const CURRENCIES = ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'KES', 'NGN', 'ZAR', 'INR'];
