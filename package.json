@@ -1,0 +1,18 @@
+{
+  "name": "housedesign",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Upload a room photo, get an editorial AI redesign board. Anthropic-only.",
+  "scripts": {
+    "install:all": "npm install && npm --prefix server install && npm --prefix designer install",
+    "migrate": "npm --prefix server run migrate",
+    "dev": "concurrently -n server,web -c blue,magenta \"npm --prefix server run dev\" \"npm --prefix designer run dev\"",
+    "dev:server": "npm --prefix server run dev",
+    "dev:web": "npm --prefix designer run dev",
+    "build": "npm --prefix designer run build",
+    "start": "npm --prefix server start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}

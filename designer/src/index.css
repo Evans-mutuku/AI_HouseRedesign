@@ -1,0 +1,170 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   STUDIO — design system
+   ----------------------------------------------------------------------------
+   One neutral ramp, one accent, one radius scale. Surfaces are separated by
+   hairlines rather than shadows; shadow is reserved for things that genuinely
+   float (menus, the mobile drawer). Nothing is decorative — every token below
+   is referenced by name in the components.
+   ========================================================================= */
+@theme {
+  /* — Type ——————————————————————————————————————————————————— */
+  --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --text-eyebrow: 0.6875rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.14em;
+
+  --text-hero: clamp(2.75rem, 6.2vw, 4.75rem);
+  --text-hero--line-height: 1.02;
+  --text-hero--letter-spacing: -0.035em;
+
+  --text-display: clamp(2rem, 3.6vw, 2.9rem);
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.028em;
+
+  --text-title: clamp(1.35rem, 2.1vw, 1.75rem);
+  --text-title--line-height: 1.2;
+  --text-title--letter-spacing: -0.02em;
+
+  --text-lead: clamp(1.0625rem, 1.25vw, 1.1875rem);
+  --text-lead--line-height: 1.6;
+
+  /* — Neutrals: a single warm-grey ramp ————————————————————————— */
+  --color-canvas: #ffffff;
+  --color-surface: #f8f8f7;   /* page background behind cards */
+  --color-sunken: #f1f0ee;    /* inputs, meters, inset wells */
+  --color-ink: #14130f;       /* primary text, primary buttons */
+  --color-ink-2: #3d3b35;     /* secondary text */
+  --color-muted: #7a776f;     /* tertiary text, labels */
+  --color-faint: #a8a49a;     /* placeholder, disabled */
+  --color-line: #e7e5e0;      /* hairlines */
+  --color-line-2: #d4d1c9;    /* stronger dividers, dashed states */
+
+  /* — Accent: one clay hue, used sparingly ————————————————————— */
+  --color-accent: #c2542d;
+  --color-accent-deep: #9c3f1e;
+  --color-accent-soft: #fbeee8;
+
+  /* — Status ——————————————————————————————————————————————— */
+  --color-positive: #2f6b4f;
+  --color-warn: #a2681c;
+  --color-danger: #b3341f;
+  --color-danger-soft: #fdeceb;
+
+  /* — Shape + motion ————————————————————————————————————————— */
+  --radius-card: 14px;
+  --radius-control: 10px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* — Base —————————————————————————————————————————————————————— */
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv01", "tnum" 0;
+}
+
+.font-display {
+  font-optical-sizing: auto;
+}
+
+/* Tabular figures wherever numbers change in place (meters, counts, sizes). */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-canvas);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Firefox/WebKit scrollbar in the app shell — thin and unobtrusive. */
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-2) transparent;
+}
+.thin-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.thin-scroll::-webkit-scrollbar-thumb {
+  background: var(--color-line-2);
+  border-radius: 8px;
+}
+.thin-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* — Motion —————————————————————————————————————————————————— */
+@keyframes hd-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hd-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes hd-swatch {
+  from { opacity: 0; transform: scaleY(0.85); transform-origin: bottom; }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes hd-sweep {
+  0%   { left: -40%; width: 40%; }
+  55%  { left: 45%;  width: 45%; }
+  100% { left: 100%; width: 30%; }
+}
+@keyframes hd-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes hd-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.45; }
+}
+
+.hd-rise { animation: hd-rise 0.55s var(--ease-out) both; }
+.hd-fade { animation: hd-fade 0.5s var(--ease-out) both; }
+.hd-swatch { animation: hd-swatch 0.5s var(--ease-out) both; }
+.hd-spin { animation: hd-spin 0.9s linear infinite; }
+.hd-pulse { animation: hd-pulse 1.6s var(--ease-out) infinite; }
+
+/* Reveal-on-scroll: hidden until an observer toggles .is-visible. */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.6s var(--ease-out),
+    transform 0.6s var(--ease-out);
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .hd-rise, .hd-fade, .hd-swatch, .hd-pulse { animation: none; }
+  .hd-spin { animation-duration: 2.4s; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}

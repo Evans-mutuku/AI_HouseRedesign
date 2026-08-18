@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Secrets — never commit
+.env
+.env.*
+!.env.example
+
+# Uploaded room photos (MVP local disk storage)
+server/uploads/
+uploads/
+
+# Build output
+dist/
+designer/dist/
+
+# Logs / OS
+*.log
+.DS_Store
+Thumbs.db
