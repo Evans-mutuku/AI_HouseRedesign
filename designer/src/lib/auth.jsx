@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);          // Firebase user
   const [account, setAccount] = useState(null);    // our API's /me payload
   const [accountFor, setAccountFor] = useState(null); // uid `account` describes
-  // Firebase has not reported yet — unless it is not configured, in which case
+  // Firebase has not reported yet - unless it is not configured, in which case
   // there is nothing to wait for.
   const [resolving, setResolving] = useState(firebaseReady);
   const userRef = useRef(null);

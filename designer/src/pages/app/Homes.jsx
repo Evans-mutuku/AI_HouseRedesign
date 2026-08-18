@@ -166,7 +166,7 @@ export default function Homes() {
                 ) : (
                   <Banner tone="info" className="mt-5">
                     No shared palette yet. Pick a board you like and adopt its
-                    palette — later rooms will be designed around it.
+                    palette - later rooms will be designed around it.
                   </Banner>
                 )}
 
@@ -284,7 +284,7 @@ export default function Homes() {
         open={Boolean(pendingDelete)}
         onClose={() => !busy && setPendingDelete(null)}
         title={`Delete “${pendingDelete?.name || ''}”?`}
-        description="The rooms inside it are kept — they simply stop belonging to a home."
+        description="The rooms inside it are kept - they simply stop belonging to a home."
         footer={
           <>
             <Button variant="secondary" onClick={() => setPendingDelete(null)} disabled={busy}>

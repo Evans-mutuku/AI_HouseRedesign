@@ -5,7 +5,7 @@
 // prompt, so the product quietly gets more like the person using it.
 //
 // It is stored on `users.taste_json` as a cache, but it is always recomputable
-// from `favorites` — nothing is lost if the column is cleared.
+// from `favorites` - nothing is lost if the column is cleared.
 
 import { query } from './db.js';
 

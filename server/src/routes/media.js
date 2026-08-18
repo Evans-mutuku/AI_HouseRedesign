@@ -3,7 +3,7 @@
 // The only way to read an uploaded original or a rendered "after". The URL must
 // carry a valid, unexpired signature minted by media.js for a specific file and
 // account; anything else is refused. Because <img> cannot send an
-// Authorization header, the signature — not the bearer token — is what proves
+// Authorization header, the signature - not the bearer token - is what proves
 // the request is allowed.
 
 import { Router } from 'express';

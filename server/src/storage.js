@@ -6,7 +6,7 @@
 // the app talks to this interface alone (`save`, `absolutePath`, `remove`), so
 // swapping to S3 / GCS / R2 later is a single-file change.
 //
-// Images are re-encoded before they get here — see assets.js, which is the only
+// Images are re-encoded before they get here - see assets.js, which is the only
 // module that calls save().
 
 import { mkdir, readFile, rm, writeFile } from 'node:fs/promises';

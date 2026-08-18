@@ -2,7 +2,7 @@
 //
 // Every request carries the caller's Firebase ID token; the server derives the
 // account from it. No user id, session token, or account identifier is ever
-// sent from here — there is nothing for the client to tamper with.
+// sent from here - there is nothing for the client to tamper with.
 //
 // The one exception is the share endpoint, which is public by design and
 // authenticates on the token in the URL instead.
@@ -70,7 +70,7 @@ export const setPlan = (plan) => request('/api/me/plan', { method: 'POST', body:
 
 /**
  * Upload a photo and start the first redesign. Returns immediately with a job
- * to poll — generation happens on the server, so navigating away is safe.
+ * to poll - generation happens on the server, so navigating away is safe.
  */
 export function createRoom({ file, name, style, budget, currency, note, homeId, region }, signal) {
   const form = new FormData();
@@ -96,7 +96,7 @@ export const updateRoom = (id, patch) =>
 export const deleteRoom = (id) =>
   request(`/api/rooms/${encodeURIComponent(id)}`, { method: 'DELETE' });
 
-/** Ask for a change to an existing room — the revision flow. */
+/** Ask for a change to an existing room - the revision flow. */
 export const reviseRoom = (id, body) =>
   request(`/api/rooms/${encodeURIComponent(id)}/revisions`, { method: 'POST', body });
 
@@ -130,7 +130,7 @@ export const createShare = (id, body = {}) =>
 export const revokeShare = (id) =>
   request(`/api/redesigns/${encodeURIComponent(id)}/share`, { method: 'DELETE' });
 
-/** Public — no token. */
+/** Public - no token. */
 export const getSharedBoard = (token) =>
   request(`/api/share/${encodeURIComponent(token)}`, { auth: false });
 

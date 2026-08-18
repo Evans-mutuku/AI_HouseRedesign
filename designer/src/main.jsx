@@ -2,7 +2,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 
-// Self-hosted, subsetted variable fonts — no external CDN, no layout shift.
+// Self-hosted, subsetted variable fonts - no external CDN, no layout shift.
 import '@fontsource-variable/fraunces';
 import '@fontsource-variable/inter';
 

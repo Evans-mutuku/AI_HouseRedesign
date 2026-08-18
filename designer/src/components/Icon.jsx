@@ -2,7 +2,7 @@
 //
 // One drawing style throughout: 24×24 box, 1.5 stroke, round caps and joins, no
 // fills, `currentColor` so every mark inherits the text colour beside it. These
-// are the only glyphs in the product — there are no emoji anywhere in the UI.
+// are the only glyphs in the product - there are no emoji anywhere in the UI.
 //
 // Usage: <Icon.Storage size={16} /> or import { Storage } directly.
 
@@ -31,7 +31,7 @@ function Svg({ size = 20, className = '', children, ...rest }) {
   );
 }
 
-/* — Navigation ————————————————————————————————————————————— */
+/* - Navigation --------------------------------------------- */
 
 export const Overview = (p) => (
   <Svg {...p}>
@@ -57,7 +57,7 @@ export const NewDesign = (p) => (
   </Svg>
 );
 
-/** Whole-home projects — a terrace of joined roofs, distinct from Overview. */
+/** Whole-home projects - a terrace of joined roofs, distinct from Overview. */
 export const Home = (p) => (
   <Svg {...p}>
     <path d="M2.5 11.5 7 7.5l4.5 4" />
@@ -84,7 +84,7 @@ export const Settings = (p) => (
   </Svg>
 );
 
-/* — Actions ————————————————————————————————————————————————— */
+/* - Actions ------------------------------------------------- */
 
 export const ArrowRight = (p) => (
   <Svg {...p}>
@@ -198,7 +198,7 @@ export const ExternalLink = (p) => (
   </Svg>
 );
 
-/* — Identity ————————————————————————————————————————————————— */
+/* - Identity ------------------------------------------------- */
 
 export const User = (p) => (
   <Svg {...p}>
@@ -252,7 +252,7 @@ export const Shield = (p) => (
   </Svg>
 );
 
-/* — Product ————————————————————————————————————————————————— */
+/* - Product ------------------------------------------------- */
 
 export const Sparkle = (p) => (
   <Svg {...p}>
@@ -333,7 +333,7 @@ export const Clock = (p) => (
   </Svg>
 );
 
-/* — Feedback ————————————————————————————————————————————————— */
+/* - Feedback ------------------------------------------------- */
 
 export const Alert = (p) => (
   <Svg {...p}>
@@ -375,9 +375,9 @@ export function Spinner({ size = 18, className = '' }) {
   );
 }
 
-/* — Brand marks ————————————————————————————————————————————— */
+/* - Brand marks --------------------------------------------- */
 
-/** Google "G" — the official four-colour mark, so it must keep its fills. */
+/** Google "G" - the official four-colour mark, so it must keep its fills. */
 export function Google({ size = 18, className = '' }) {
   return (
     <svg
@@ -408,7 +408,7 @@ export function Google({ size = 18, className = '' }) {
   );
 }
 
-/** The STUDIO wordmark's glyph — an abstract room in plan. */
+/** The STUDIO wordmark's glyph - an abstract room in plan. */
 export function Logomark({ size = 22, className = '' }) {
   return (
     <svg

@@ -11,8 +11,8 @@ import { createShare, revokeShare } from '../../lib/api.js';
  * Create or revoke a public link to one revision.
  *
  * The copy is explicit about what a link exposes, because "share" means very
- * different things to different people. A shared board carries the design — the
- * palette, the plan, the render — and deliberately not the budget, the
+ * different things to different people. A shared board carries the design - the
+ * palette, the plan, the render - and deliberately not the budget, the
  * checklist, or anything else about the account that made it.
  */
 
@@ -69,7 +69,7 @@ export default function ShareDialog({ open, onClose, redesignId, existingToken, 
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch {
-      setError('Could not copy — select the link and copy it manually.');
+      setError('Could not copy - select the link and copy it manually.');
     }
   };
 

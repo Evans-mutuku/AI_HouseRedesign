@@ -9,7 +9,7 @@ import Icon from '../Icon.jsx';
 import { formatMoney, parseMoneyToCents } from '../../lib/format.js';
 
 /**
- * Ask for a change. This is the revision flow — the thing that turns a one-shot
+ * Ask for a change. This is the revision flow - the thing that turns a one-shot
  * generator into a design conversation.
  *
  * The suggestions are there because "what would you like to change?" in front of
@@ -22,7 +22,7 @@ const SUGGESTIONS = [
   'Keep the sofa I already own',
   'More plants and greenery',
   'Warmer lighting throughout',
-  'Less furniture — open it up',
+  'Less furniture - open it up',
   'A brighter, more coastal feel',
 ];
 
@@ -67,7 +67,7 @@ export default function ReviseDialog({
       open={open}
       onClose={close}
       title="Ask for a change"
-      description="This keeps everything you did not mention and adds a new revision to this room — your previous versions stay."
+      description="This keeps everything you did not mention and adds a new revision to this room - your previous versions stay."
       footer={
         <>
           <Button variant="secondary" onClick={close} disabled={submitting}>

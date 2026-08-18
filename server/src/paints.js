@@ -1,4 +1,4 @@
-// Paint matching — turning "#EDE7DA Chalk" into something you can buy.
+// Paint matching - turning "#EDE7DA Chalk" into something you can buy.
 //
 // ── An honest note about the data ──────────────────────────────────────────
 // The names and codes below are real, widely published products. The hex values
@@ -11,14 +11,14 @@
 // prints it next to the results, and matches beyond a visible distance are
 // labelled as approximate rather than quietly presented as exact.
 //
-// To swap in licensed colorimetric data later, replace PAINTS — nothing else
+// To swap in licensed colorimetric data later, replace PAINTS - nothing else
 // changes.
 
 import { deltaE2000, hexToLab } from './color.js';
 
 export const DISCLAIMER =
   'Closest matches by screen colour. Paint shifts with finish, light, and ' +
-  'substrate — always check a physical sample in the room before buying.';
+  'substrate - always check a physical sample in the room before buying.';
 
 /**
  * Curated across four widely stocked ranges. Kept deliberately tight: a short

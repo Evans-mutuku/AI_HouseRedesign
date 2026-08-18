@@ -1,6 +1,6 @@
 // Colour science for paint matching.
 //
-// Nearest-colour in sRGB is close to useless — it treats a shift in a dark navy
+// Nearest-colour in sRGB is close to useless - it treats a shift in a dark navy
 // as the same magnitude as the same shift in a pale cream, which is not how the
 // eye works. So we convert to CIELAB and compare with CIEDE2000, the current
 // standard perceptual difference metric. It is fiddly, but it is the difference

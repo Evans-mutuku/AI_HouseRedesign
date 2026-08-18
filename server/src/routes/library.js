@@ -14,7 +14,7 @@ router.use(requireAuth);
 
 /* ── Jobs ────────────────────────────────────────────────────────────────── */
 
-/** Everything still in flight — lets the UI restore itself after a reload. */
+/** Everything still in flight - lets the UI restore itself after a reload. */
 router.get('/jobs', async (req, res) => {
   try {
     const rows = await jobs.activeJobs(req.user.id);

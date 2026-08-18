@@ -81,7 +81,7 @@ function readIntents(body) {
         if (candidate.w > 0.02 && candidate.h > 0.02) region = candidate;
       }
     } catch {
-      /* malformed region — treat as a whole-image edit */
+      /* malformed region - treat as a whole-image edit */
     }
   }
 
@@ -198,7 +198,7 @@ router.post('/rooms/:id/revisions', generateLimiter, async (req, res) => {
     const intents = readIntents(req.body);
     if (!intents.instruction && !intents.style && intents.budgetCents == null && !intents.region) {
       return res.status(400).json({
-        error: 'Tell us what to change — an instruction, a different style, a budget, or an area.',
+        error: 'Tell us what to change - an instruction, a different style, a budget, or an area.',
       });
     }
 

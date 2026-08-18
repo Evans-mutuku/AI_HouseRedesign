@@ -9,7 +9,7 @@ import PhasedPlan from './board/PhasedPlan.jsx';
 import PaintMatches from './board/PaintMatches.jsx';
 
 // Use the concept's first sentence as the headline and the remainder as the
-// lead — an editorial move that keeps the big type short.
+// lead - an editorial move that keeps the big type short.
 function splitConcept(text) {
   const t = String(text || '').trim();
   const match = t.match(/^(.+?[.!?])\s+(.*)$/s);
@@ -40,7 +40,7 @@ function Section({ eyebrow, icon: SectionIcon, title, children, className = '' }
 }
 
 /**
- * The board. Pure presentation — it takes an already-fetched revision and
+ * The board. Pure presentation - it takes an already-fetched revision and
  * renders whatever the model actually returned, skipping any section that came
  * back empty.
  *
@@ -95,7 +95,7 @@ export default function DesignBoard({
           >
             Our check found{' '}
             {fidelity.missing.map((m) => `the ${m.type} was ${m.problem}`).join(', ')}
-            . The written plan is unaffected — ask for a revision to try the render
+            . The written plan is unaffected - ask for a revision to try the render
             again.
           </Banner>
         )}
@@ -113,7 +113,7 @@ export default function DesignBoard({
         </Reveal>
       )}
 
-      {/* The plan — costed and phased */}
+      {/* The plan - costed and phased */}
       {board.plan?.length > 0 && (
         <Section eyebrow="The plan" icon={Icon.Layout}>
           <PhasedPlan
@@ -195,7 +195,7 @@ export default function DesignBoard({
                 <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent" />
                 <span className="text-sm leading-relaxed">
                   <span className="text-ink">{item.item}</span>
-                  {item.note && <span className="text-muted"> — {item.note}</span>}
+                  {item.note && <span className="text-muted"> - {item.note}</span>}
                 </span>
               </li>
             ))}

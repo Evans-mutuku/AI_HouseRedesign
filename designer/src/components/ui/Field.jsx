@@ -120,7 +120,7 @@ export function TextArea({ label, hint, error, id, rows = 3, className = '', ...
   );
 }
 
-/** A row of mutually exclusive pills — style, budget, filters. */
+/** A row of mutually exclusive pills - style, budget, filters. */
 export function ChipGroup({ options, value, onChange, allowClear = false }) {
   return (
     <div className="flex flex-wrap gap-2">
@@ -149,7 +149,7 @@ export function ChipGroup({ options, value, onChange, allowClear = false }) {
   );
 }
 
-/** Segmented control — for short, ordered choices like budget tiers. */
+/** Segmented control - for short, ordered choices like budget tiers. */
 export function Segmented({ options, value, onChange, label }) {
   return (
     <div

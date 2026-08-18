@@ -7,7 +7,7 @@
 //
 // Strict-mode rules: every property must appear in `required`, and every object
 // must set `additionalProperties: false`. Optional-in-spirit fields are
-// therefore declared required and allowed to be an empty string or array —
+// therefore declared required and allowed to be an empty string or array -
 // validate.js still normalises whatever arrives.
 //
 // Two constraint families are deliberately absent:
@@ -21,7 +21,7 @@
 // Both live in validate.js instead, which has to run anyway: coordinates are
 // clamped to 0–1, amounts to >= 0, hex values are regex-checked and dropped if
 // malformed, and item keys are slugified and de-duplicated. `enum` is cheap and
-// stays — it is what keeps phases and actions inside the vocabulary the UI
+// stays - it is what keeps phases and actions inside the vocabulary the UI
 // groups by.
 
 const str = { type: 'string' };

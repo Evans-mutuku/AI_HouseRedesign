@@ -6,7 +6,7 @@ import { useAuth } from '../lib/authContext.js';
 /**
  * Gate for everything under /app.
  *
- * This is a convenience, not the security boundary — it keeps signed-out people
+ * This is a convenience, not the security boundary - it keeps signed-out people
  * from seeing an empty shell. The real enforcement is server-side: every API
  * route verifies the Firebase ID token and scopes its queries to that account,
  * so bypassing this component reveals nothing.

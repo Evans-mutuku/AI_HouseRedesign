@@ -40,7 +40,7 @@ export function parseModelJson(text) {
     if (first !== -1 && last !== -1 && last > first) {
       cleaned = cleaned.slice(first, last + 1);
     }
-    return JSON.parse(cleaned); // may throw — caller handles
+    return JSON.parse(cleaned); // may throw - caller handles
   }
 }
 
@@ -56,7 +56,7 @@ const imageBlock = ({ base64, mediaType }) => ({
  * vision models handle best), and `schema` is passed as `output_config.format`
  * so the API constrains generation to the shape we need. That is stronger than
  * asking nicely in the prompt, and it is the documented replacement for
- * assistant prefill — current models reject a trailing assistant turn outright.
+ * assistant prefill - current models reject a trailing assistant turn outright.
  *
  * Adaptive thinking is on: reading a room and pricing a plan are both jobs
  * where the model reasoning first measurably beats it answering first.

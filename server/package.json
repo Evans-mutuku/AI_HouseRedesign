@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Express backend for HouseDesign — room photo in, editorial redesign board out.",
+  "description": "Express backend for HouseDesign - room photo in, editorial redesign board out.",
   "main": "src/index.js",
   "scripts": {
     "dev": "node --watch src/index.js",

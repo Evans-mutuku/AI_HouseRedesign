@@ -33,7 +33,7 @@ export default function StoragePlan() {
 
   const catalog = ORDER.map((id) => plans.find((p) => p.id === id)).filter(Boolean);
 
-  // The heaviest few rooms — the fastest way to reclaim space.
+  // The heaviest few rooms - the fastest way to reclaim space.
   const heaviest = [...(rooms || [])]
     .sort((a, b) => (b.bytes || 0) - (a.bytes || 0))
     .slice(0, 5);
@@ -89,9 +89,9 @@ export default function StoragePlan() {
           <div>
             <Eyebrow>Used</Eyebrow>
             <p className="mt-2 font-display text-display font-semibold text-ink tnum">
-              {storage ? formatBytes(storage.used) : '—'}
+              {storage ? formatBytes(storage.used) : '-'}
               <span className="ml-2 font-sans text-base font-normal text-muted">
-                of {storage ? formatBytes(storage.limit) : '—'}
+                of {storage ? formatBytes(storage.limit) : '-'}
               </span>
             </p>
           </div>
@@ -123,7 +123,7 @@ export default function StoragePlan() {
       <section>
         <SectionHeader
           title="Plans"
-          description="Every plan includes the full studio — boards, renders, and history. Only the storage differs."
+          description="Every plan includes the full studio - boards, renders, and history. Only the storage differs."
         />
 
         <div className="mt-6 grid gap-5 md:grid-cols-2">
@@ -189,7 +189,7 @@ export default function StoragePlan() {
           <span className="mt-0.5 shrink-0">
             <Icon.Info size={14} />
           </span>
-          No payment processor is connected in this build — switching plans
+          No payment processor is connected in this build - switching plans
           changes your quota immediately so the flow can be used end to end.
         </p>
       </section>
@@ -233,7 +233,7 @@ export default function StoragePlan() {
               ))
             ) : (
               <p className="py-8 text-sm text-muted">
-                Nothing stored yet — your quota is untouched.
+                Nothing stored yet - your quota is untouched.
               </p>
             )}
           </div>
@@ -255,7 +255,7 @@ export default function StoragePlan() {
         description={
           pendingPlan?.id === 'pro'
             ? 'Your storage limit goes from 500 MB to 10 GB, effective immediately.'
-            : 'Your limit returns to 500 MB. Nothing is deleted — but if you are over the cap, new redesigns stay blocked until you free space.'
+            : 'Your limit returns to 500 MB. Nothing is deleted - but if you are over the cap, new redesigns stay blocked until you free space.'
         }
         footer={
           <>

@@ -166,7 +166,7 @@ export default function FloorPlan({ plan, className = '' }) {
             Furniture
           </span>
           {plan.confidence === 'estimated' && (
-            <span>Dimensions estimated from the photo — measure before buying.</span>
+            <span>Dimensions estimated from the photo - measure before buying.</span>
           )}
         </div>
       </div>

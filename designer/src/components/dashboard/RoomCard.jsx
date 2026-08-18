@@ -8,7 +8,7 @@ import { formatBytes, formatRelative } from '../../lib/format.js';
  * One room in the grid.
  *
  * The thumbnail is the latest render when there is one, the original photo
- * otherwise — and it is genuinely a thumbnail now: a ~640px WebP generated on
+ * otherwise - and it is genuinely a thumbnail now: a ~640px WebP generated on
  * upload rather than the full-size image scaled down in the browser, which is
  * the difference between a grid that loads instantly and one that pulls several
  * megabytes to show six small pictures.

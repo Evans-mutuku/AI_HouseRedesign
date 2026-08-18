@@ -29,7 +29,7 @@ export default function Settings() {
   const navigate = useNavigate();
 
   // The field shows what the user typed if they have typed, and the saved name
-  // otherwise — so a profile refresh never clobbers an edit in progress, and no
+  // otherwise - so a profile refresh never clobbers an edit in progress, and no
   // effect has to mirror one piece of state into another.
   const [draftName, setDraftName] = useState(null);
   const [saving, setSaving] = useState(false);
@@ -152,7 +152,7 @@ export default function Settings() {
             <DataRow label="Member since" value={formatDate(account?.user?.createdAt)} />
             <DataRow
               label="Plan"
-              value={plan === 'pro' ? 'Pro — 10 GB' : 'Free — 500 MB'}
+              value={plan === 'pro' ? 'Pro - 10 GB' : 'Free - 500 MB'}
               action={
                 <Button as={Link} to="/app/storage" variant="secondary" size="sm">
                   {plan === 'pro' ? 'Manage' : 'Upgrade'}
@@ -164,7 +164,7 @@ export default function Settings() {
               value={
                 storage
                   ? `${formatBytes(storage.used)} of ${formatBytes(storage.limit)}`
-                  : '—'
+                  : '-'
               }
               action={
                 <Badge tone={storage?.percent >= 80 ? 'warn' : 'neutral'}>
@@ -197,7 +197,7 @@ export default function Settings() {
               </p>
               <p>
                 Images are served through short-lived signed links rather than
-                public URLs — a link that leaks stops working, and cannot be
+                public URLs - a link that leaks stops working, and cannot be
                 pointed at anyone else's files.
               </p>
               <p>

@@ -1,7 +1,7 @@
-# HouseDesign — STUDIO
+# HouseDesign - STUDIO
 
-Upload a photo of a room and get a **costed, phased redesign plan** — plus a
-render of that same room, restyled — then keep asking for changes until it is
+Upload a photo of a room and get a **costed, phased redesign plan** - plus a
+render of that same room, restyled - then keep asking for changes until it is
 right.
 
 Every room belongs to a signed-in account and keeps its full revision history.
@@ -28,7 +28,7 @@ compressed on arrival so that goes a long way.
 | Auth       | Firebase Authentication (email/password + Google)          |
 | Backend    | Node.js + Express, in-process job queue                    |
 | Database   | PostgreSQL (`pg`)                                          |
-| Images     | `sharp` — re-encode, resize, thumbnail                      |
+| Images     | `sharp` - re-encode, resize, thumbnail                      |
 | Storage    | local `/uploads`, served only via signed URLs               |
 | AI         | Anthropic Messages API (vision) + OpenAI `gpt-image-1`      |
 
@@ -52,7 +52,7 @@ In the [Firebase console](https://console.firebase.google.com/):
 3. Under **Settings → Authorized domains**, make sure `localhost` is listed.
 4. Copy the web config into `designer/.env` (see `designer/.env.example`).
 
-Those values are public by design — Firebase expects them in the bundle. Access
+Those values are public by design - Firebase expects them in the bundle. Access
 is decided by the ID token the SDK mints, which the backend verifies.
 
 ### 3. Backend env
@@ -62,7 +62,7 @@ cp server/.env.example server/.env
 ```
 
 Required: `ANTHROPIC_API_KEY`, `FIREBASE_PROJECT_ID` (same project as the
-frontend), `MEDIA_SIGNING_SECRET`, `DATABASE_URL`. `OPENAI_API_KEY` is optional —
+frontend), `MEDIA_SIGNING_SECRET`, `DATABASE_URL`. `OPENAI_API_KEY` is optional -
 without it you get a board with no render. Every knob is documented in
 `.env.example`.
 
@@ -73,7 +73,7 @@ createdb housedesign
 npm run migrate
 ```
 
-`migrate` applies the schema **and** backfills older rows — it registers legacy
+`migrate` applies the schema **and** backfills older rows - it registers legacy
 images as assets, generates their thumbnails, upgrades pre-costing boards, and
 numbers existing revisions. Idempotent; safe on every deploy.
 
@@ -92,7 +92,7 @@ Frontend → http://localhost:3000 · Backend → http://localhost:5000
 Generation is a **background job**. The upload request enqueues and returns
 immediately with a job id; a worker in the same process claims it and reports
 progress back through the row. Closing the tab, reloading, or switching devices
-costs nothing — the UI reattaches to any running job.
+costs nothing - the UI reattaches to any running job.
 
 ```
 POST /api/rooms  ──►  jobs row (queued)
@@ -109,7 +109,7 @@ POST /api/rooms  ──►  jobs row (queued)
 ```
 
 The survey runs **once per room**. A room's windows do not move between
-revisions, so a revision re-runs only steps 2–5 — which is what makes asking for
+revisions, so a revision re-runs only steps 2–5 - which is what makes asking for
 a change cheap.
 
 ### Why the render used to delete windows
@@ -117,13 +117,13 @@ a change cheap.
 Three separate causes, all fixed:
 
 1. **The output size was fixed at `1536x1024`.** A portrait photo came back
-   reframed to landscape, and whatever sat at the top and bottom — very often a
-   tall window or a door head — was cropped out of existence. The size is now
+   reframed to landscape, and whatever sat at the top and bottom - very often a
+   tall window or a door head - was cropped out of existence. The size is now
    chosen to match the source aspect ratio.
 2. **"Preserve the architecture" was one clause in a paragraph the design model
    wrote freehand**, competing with a vivid description of everything that
    should change. Now a separate vision pass inventories every window, door,
-   fireplace, and alcove — position, frame, glazing, what is visible through it —
+   fireplace, and alcove - position, frame, glazing, what is visible through it -
    and the render prompt is composed server-side with that list enumerated
    **first and last**, the two positions a model weights most. The creative
    direction is fenced into the middle and explicitly forbidden from mentioning
@@ -143,7 +143,7 @@ Three separate causes, all fixed:
 
 **Identity comes only from a verified token.** The browser sends its Firebase ID
 token as `Authorization: Bearer …`; `server/src/auth.js` verifies it against
-Google's published signing keys — RS256 signature, issuer, audience, expiry —
+Google's published signing keys - RS256 signature, issuer, audience, expiry -
 then maps `sub` to a `users` row. **No route accepts a user id, session token, or
 account identifier from the client.**
 
@@ -166,7 +166,7 @@ Another account's id returns **404**, exactly like one that does not exist.
 **Images are not public.** There is deliberately no `express.static` mount for
 `/uploads`. The API returns short-lived **signed URLs**
 (`/api/media/<file>?u=…&e=…&s=…`) where the signature is an HMAC over the
-filename, the owning account, and the expiry — change any of the three and it
+filename, the owning account, and the expiry - change any of the three and it
 stops working. Shared boards get their own two-hour signatures.
 
 ---
@@ -180,8 +180,8 @@ stops working. Shared boards get their own two-hour signatures.
 
 **Everything is compressed on upload.** A phone photo arrives at 3–8 MB of JPEG
 at 4000px; nothing here needs more than 2048px, so it is re-encoded to WebP at
-q80 with a 640px thumbnail alongside. In practice that is a **90%+ reduction** —
-a 2.8 MB upload becomes about 184 KB including its thumbnail — which is the
+q80 with a 640px thumbnail alongside. In practice that is a **90%+ reduction** -
+a 2.8 MB upload becomes about 184 KB including its thumbnail - which is the
 difference between roughly 60 and roughly 500 redesigns inside the free plan.
 Grids load the thumbnail, not a scaled-down full render.
 
@@ -190,7 +190,7 @@ registered in, so the meter cannot drift from what is on disk. Trashed work
 still counts until the trash is emptied; the dashboard says how much emptying
 would return.
 
-`POST /api/me/plan` records the choice and moves the quota — **no payment
+`POST /api/me/plan` records the choice and moves the quota - **no payment
 processor is connected**. Swap that handler for a checkout session when billing
 goes in; nothing else reads the plan directly.
 
@@ -233,7 +233,7 @@ All routes require `Authorization: Bearer <firebase-id-token>` except
 | `GET`    | `/api/rooms/:id`                         | One room + its revision timeline + any running job   |
 | `PATCH`  | `/api/rooms/:id`                         | Rename, or move between homes                        |
 | `DELETE` | `/api/rooms/:id`                         | Move to trash                                        |
-| `POST`   | `/api/rooms/:id/revisions`               | Ask for a change — instruction, budget, or region     |
+| `POST`   | `/api/rooms/:id/revisions`               | Ask for a change - instruction, budget, or region     |
 | `GET`/`POST`/`DELETE` | `/api/rooms/:id/progress`   | Progress photos                                      |
 | `GET`    | `/api/redesigns/:id`                     | One revision's full board + checklist                |
 | `GET`    | `/api/redesigns/:id/paints`              | Palette matched to real paint                        |
@@ -251,7 +251,7 @@ All routes require `Authorization: Bearer <firebase-id-token>` except
 ### Talking to Claude
 
 Three calls, each constrained by a JSON Schema passed as
-`output_config.format` — the API enforces the shape rather than us hoping a
+`output_config.format` - the API enforces the shape rather than us hoping a
 prompt was followed. (Assistant prefill, the older trick for this, is rejected by
 current models.) Adaptive thinking is on; `validate.js` still normalises and
 recomputes every number, because the model is good at pricing a sofa and bad at
@@ -269,7 +269,7 @@ than replacing anything. Every version stays selectable, and you can branch from
 any of them.
 
 **Region edits.** Drag a box over one part of the room and only that area is
-edited — everything outside comes back pixel-identical, via a mask on the edit
+edited - everything outside comes back pixel-identical, via a mask on the edit
 call.
 
 **Phased, costed plans.** Set a real budget and every line gets a price and a
@@ -279,12 +279,12 @@ the top always agrees with the list beneath it.
 **Paint matching.** Palette colours matched to Farrow & Ball, Benjamin Moore,
 Sherwin-Williams, and Dulux by CIEDE2000 distance in CIELAB. **The hex values
 behind the catalogue are the commonly published screen approximations, not
-manufacturer colorimetric data** — so every match carries how close it actually
+manufacturer colorimetric data** - so every match carries how close it actually
 is, and the panel always shows the "go get a physical sample" disclaimer. Swap
 `server/src/paints.js` for licensed data and nothing else changes.
 
-**Sharing.** A public link carries the design — palette, plan, render, floor plan
-— and deliberately not the budget, the checklist, or anything about the account.
+**Sharing.** A public link carries the design - palette, plan, render, floor plan
+- and deliberately not the budget, the checklist, or anything about the account.
 Revocable, expiring, and its images are signed for two hours at a time.
 
 **PDF export.** The browser's own print-to-PDF, driven by a print stylesheet.
@@ -292,7 +292,7 @@ Chrome and controls drop away, the board reflows to one column, and sections are
 kept off page folds.
 
 **Taste profile.** Starring boards builds a preference profile that is folded
-into later prompts. Derived from favourites only — nothing to fill in.
+into later prompts. Derived from favourites only - nothing to fill in.
 
 ---
 
@@ -300,7 +300,7 @@ into later prompts. Derived from favourites only — nothing to fill in.
 
 The pipeline was verified end to end against live Anthropic and OpenAI APIs: two
 accounts, cross-account reads/writes/deletes refused, a full generation, a
-revision, sharing, checklists, trash, and quota accounting — 67 checks, plus 60
+revision, sharing, checklists, trash, and quota accounting - 67 checks, plus 60
 more asserting the API returns exactly the fields the UI reads.
 
 **Not exercised:** the fidelity *retry* path. Both test renders passed the

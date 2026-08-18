@@ -16,7 +16,7 @@ export default function DashboardLayout() {
   const location = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  // Lock scroll while the drawer is open. (It closes itself on navigation —
+  // Lock scroll while the drawer is open. (It closes itself on navigation -
   // every link inside it calls onNavigate.)
   useEffect(() => {
     if (!drawerOpen) return undefined;
@@ -42,12 +42,12 @@ export default function DashboardLayout() {
 
   return (
     <div className="flex h-screen overflow-hidden bg-canvas">
-      {/* Rail — desktop */}
+      {/* Rail - desktop */}
       <aside className="hidden w-64 shrink-0 border-r border-line lg:block">
         <Sidebar />
       </aside>
 
-      {/* Drawer — mobile */}
+      {/* Drawer - mobile */}
       {drawerOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div

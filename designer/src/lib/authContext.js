@@ -1,7 +1,7 @@
 // The auth context and the helpers that read from it.
 //
 // Kept apart from auth.jsx (which holds the provider component) so that files
-// exporting React components export nothing else — the condition Fast Refresh
+// exporting React components export nothing else - the condition Fast Refresh
 // needs to hot-swap a component without dropping app state.
 
 import { createContext, useContext } from 'react';

@@ -1,4 +1,4 @@
-// Account routes — profile, storage usage, and plan changes.
+// Account routes - profile, storage usage, and plan changes.
 //
 // Like the redesign routes, everything here reads `req.user`, which is derived
 // only from a verified Firebase ID token. The client cannot name a different
@@ -44,7 +44,7 @@ async function projectStats(userId) {
 }
 
 /**
- * GET /api/me — everything the shell needs on load: who you are, what plan you
+ * GET /api/me - everything the shell needs on load: who you are, what plan you
  * are on, how much of your quota is gone, and how many projects you have.
  */
 router.get('/', async (req, res) => {
@@ -62,11 +62,11 @@ router.get('/', async (req, res) => {
 });
 
 /**
- * POST /api/me/plan — switch plans.
+ * POST /api/me/plan - switch plans.
  *
  * There is no payment processor wired up: this records the choice so the quota
  * and the dashboard reflect it. Swap this handler for a checkout session (and
- * set the plan from the provider's webhook) when billing goes in — nothing else
+ * set the plan from the provider's webhook) when billing goes in - nothing else
  * in the app reads the plan directly, it all goes through plans.js.
  */
 router.post('/plan', async (req, res) => {
@@ -89,8 +89,8 @@ router.post('/plan', async (req, res) => {
     );
     const updated = rows[0];
 
-    // Downgrading below current usage is allowed — we never delete a user's
-    // work — but new uploads stay blocked until they are back under the cap.
+    // Downgrading below current usage is allowed - we never delete a user's
+    // work - but new uploads stay blocked until they are back under the cap.
     const storage = await storageStatus(updated);
     return res.json({
       user: profileOf(updated),
@@ -104,7 +104,7 @@ router.post('/plan', async (req, res) => {
 });
 
 /**
- * GET /api/me/storage — the quota meter on its own, for cheap refreshes.
+ * GET /api/me/storage - the quota meter on its own, for cheap refreshes.
  */
 router.get('/storage', async (req, res) => {
   try {

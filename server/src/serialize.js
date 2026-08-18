@@ -1,7 +1,7 @@
 // Row → API response shaping, in one place.
 //
 // Every image URL in the product is minted here, and always against a userId
-// the caller proved they are — never a value carried on the row. Keeping that
+// the caller proved they are - never a value carried on the row. Keeping that
 // in a single module means there is exactly one line to audit for "could this
 // hand out someone else's picture".
 

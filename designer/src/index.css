@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   STUDIO — design system
+   STUDIO - design system
    ----------------------------------------------------------------------------
    One neutral ramp, one accent, one radius scale. Surfaces are separated by
    hairlines rather than shadows; shadow is reserved for things that genuinely
-   float (menus, the mobile drawer). Nothing is decorative — every token below
+   float (menus, the mobile drawer). Nothing is decorative - every token below
    is referenced by name in the components.
    ========================================================================= */
 @theme {
-  /* — Type ——————————————————————————————————————————————————— */
+  /* - Type --------------------------------------------------- */
   --font-display: "Fraunces Variable", ui-serif, Georgia, serif;
   --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -33,7 +33,7 @@
   --text-lead: clamp(1.0625rem, 1.25vw, 1.1875rem);
   --text-lead--line-height: 1.6;
 
-  /* — Neutrals: a single warm-grey ramp ————————————————————————— */
+  /* - Neutrals: a single warm-grey ramp ------------------------- */
   --color-canvas: #ffffff;
   --color-surface: #f8f8f7;   /* page background behind cards */
   --color-sunken: #f1f0ee;    /* inputs, meters, inset wells */
@@ -44,24 +44,24 @@
   --color-line: #e7e5e0;      /* hairlines */
   --color-line-2: #d4d1c9;    /* stronger dividers, dashed states */
 
-  /* — Accent: one clay hue, used sparingly ————————————————————— */
+  /* - Accent: one clay hue, used sparingly --------------------- */
   --color-accent: #c2542d;
   --color-accent-deep: #9c3f1e;
   --color-accent-soft: #fbeee8;
 
-  /* — Status ——————————————————————————————————————————————— */
+  /* - Status ----------------------------------------------- */
   --color-positive: #2f6b4f;
   --color-warn: #a2681c;
   --color-danger: #b3341f;
   --color-danger-soft: #fdeceb;
 
-  /* — Shape + motion ————————————————————————————————————————— */
+  /* - Shape + motion ----------------------------------------- */
   --radius-card: 14px;
   --radius-control: 10px;
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* — Base —————————————————————————————————————————————————————— */
+/* - Base ------------------------------------------------------ */
 html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -99,7 +99,7 @@ body {
   outline: none;
 }
 
-/* Firefox/WebKit scrollbar in the app shell — thin and unobtrusive. */
+/* Firefox/WebKit scrollbar in the app shell - thin and unobtrusive. */
 .thin-scroll {
   scrollbar-width: thin;
   scrollbar-color: var(--color-line-2) transparent;
@@ -116,7 +116,7 @@ body {
   background: transparent;
 }
 
-/* — Motion —————————————————————————————————————————————————— */
+/* - Motion -------------------------------------------------- */
 @keyframes hd-rise {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: none; }
@@ -170,7 +170,7 @@ body {
 }
 
 /* ============================================================================
-   PRINT — the PDF export
+   PRINT - the PDF export
    ----------------------------------------------------------------------------
    "Export to PDF" is the browser's own print-to-PDF, driven by this stylesheet.
    No server renderer, no extra dependency, and the output is a genuinely usable
@@ -207,7 +207,7 @@ body {
     display: block !important;
   }
 
-  /* Reveal-on-scroll never runs during printing — show everything. */
+  /* Reveal-on-scroll never runs during printing - show everything. */
   .reveal {
     opacity: 1 !important;
     transform: none !important;

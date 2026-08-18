@@ -133,7 +133,7 @@ export default function NewRedesign() {
         <SectionHeader
           eyebrow="In the studio"
           title="Reading your room"
-          description="This takes about a minute. It runs on our servers, so you can leave this page — the board will be waiting in your rooms."
+          description="This takes about a minute. It runs on our servers, so you can leave this page - the board will be waiting in your rooms."
         />
 
         <JobProgress job={job} onCancel={cancel} />
@@ -172,7 +172,7 @@ export default function NewRedesign() {
         title={file ? 'Set the brief' : 'Start with your room'}
         description={
           file
-            ? 'All optional — sensible defaults are already set. A real budget gets you a costed, phased plan.'
+            ? 'All optional - sensible defaults are already set. A real budget gets you a costed, phased plan.'
             : 'One photo of the room as it stands. No staging, no cleanup.'
         }
       />
@@ -220,7 +220,7 @@ export default function NewRedesign() {
                 Choose a different photo
               </Button>
               <span className="text-xs text-muted">
-                Compressed on upload — stored at a fraction of this
+                Compressed on upload - stored at a fraction of this
               </span>
             </div>
           </div>
@@ -230,7 +230,7 @@ export default function NewRedesign() {
               <TextInput
                 label="Room name"
                 placeholder="e.g. Living room"
-                hint="Optional — we'll name it from the photo if you leave this blank."
+                hint="Optional - we'll name it from the photo if you leave this blank."
                 value={form.name}
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
               />

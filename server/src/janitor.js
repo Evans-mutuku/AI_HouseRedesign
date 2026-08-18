@@ -3,8 +3,8 @@
 // Two jobs, both of which exist because storage costs a user their quota:
 //
 //   1. Purge trash older than the retention window, for real.
-//   2. Sweep assets nothing points at any more. These should not happen — every
-//      write path cleans up after itself — but a process killed between writing
+//   2. Sweep assets nothing points at any more. These should not happen - every
+//      write path cleans up after itself - but a process killed between writing
 //      a file and committing its row would leave one behind, and an orphan that
 //      silently eats someone's 500 MB is worse than the cost of looking.
 

@@ -3,8 +3,8 @@ import { useCallback, useEffect, useState } from 'react';
 /**
  * Fetch-on-mount with cancellation and a manual reload.
  *
- * Every dashboard page needs the same four things — data, an error, a "still
- * loading" state, and a refresh — so they share one implementation rather than
+ * Every dashboard page needs the same four things - data, an error, a "still
+ * loading" state, and a refresh - so they share one implementation rather than
  * four subtly different copies. State is only ever written from the promise
  * callbacks, never synchronously during the effect, so a re-render is not
  * scheduled before the first paint.

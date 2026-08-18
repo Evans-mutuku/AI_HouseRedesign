@@ -15,7 +15,7 @@ import { formatDate } from '../lib/format.js';
  *
  * Read-only by construction: the payload the server sends has no budget, no
  * checklist, and no ids that would work anywhere else, so there is nothing here
- * to lock down in the UI. The page's other job is to be a decent advert — hence
+ * to lock down in the UI. The page's other job is to be a decent advert - hence
  * the footer.
  */
 export default function SharedBoard() {

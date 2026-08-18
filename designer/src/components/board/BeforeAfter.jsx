@@ -61,7 +61,7 @@ export default function BeforeAfter({ beforeUrl, afterUrl, className = '' }) {
       <figure className={`overflow-hidden rounded-[14px] border border-line bg-sunken ${className}`}>
         <img src={beforeUrl} alt="The room before redesign" className="h-auto w-full" />
         <figcaption className="border-t border-line bg-canvas px-4 py-3 text-eyebrow font-semibold uppercase text-muted">
-          Before — your photo
+          Before - your photo
         </figcaption>
       </figure>
     );
@@ -151,7 +151,7 @@ export default function BeforeAfter({ beforeUrl, afterUrl, className = '' }) {
           Drag to compare
         </span>
         <span className="text-xs text-muted">
-          Your photo, edited — same room, same camera
+          Your photo, edited - same room, same camera
         </span>
       </figcaption>
     </figure>

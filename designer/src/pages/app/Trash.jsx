@@ -18,7 +18,7 @@ import { useAuth } from '../../lib/authContext.js';
 /**
  * Deleted work, recoverable for 30 days.
  *
- * Trashed items still occupy the quota — that is honest rather than convenient,
+ * Trashed items still occupy the quota - that is honest rather than convenient,
  * and it is why the page leads with how much space emptying would return.
  */
 export default function Trash() {

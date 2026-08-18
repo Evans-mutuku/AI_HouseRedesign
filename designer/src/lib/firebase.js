@@ -1,6 +1,6 @@
 // Firebase client setup.
 //
-// These values are the *public* web config — Firebase is designed for them to
+// These values are the *public* web config - Firebase is designed for them to
 // ship in the bundle, and they grant nothing on their own. Access is decided by
 // the ID token the SDK mints after a real sign-in, which our API verifies
 // server-side. Nothing secret belongs in this file.
@@ -33,7 +33,7 @@ const app = firebaseReady ? initializeApp(firebaseConfig) : null;
 
 export const auth = app ? getAuth(app) : null;
 
-// Keep the session across reloads and tabs — a dashboard that logs you out on
+// Keep the session across reloads and tabs - a dashboard that logs you out on
 // refresh is not a dashboard.
 if (auth) {
   setPersistence(auth, browserLocalPersistence).catch(() => {
@@ -72,7 +72,7 @@ export function authErrorMessage(err) {
     case 'auth/operation-not-allowed':
       return 'That sign-in method is disabled in your Firebase project. Enable it under Authentication → Sign-in method.';
     case 'auth/network-request-failed':
-      return 'Network problem — check your connection and try again.';
+      return 'Network problem - check your connection and try again.';
     default:
       return err?.message?.replace(/^Firebase:\s*/, '') || 'Something went wrong.';
   }

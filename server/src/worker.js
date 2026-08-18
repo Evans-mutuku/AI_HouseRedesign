@@ -1,7 +1,7 @@
 // The generation pipeline, run out of band.
 //
 // One redesign is: survey the room (once, cached), design the board, render the
-// "after", then check the render actually kept the room's windows and doors —
+// "after", then check the render actually kept the room's windows and doors -
 // and if it did not, say so precisely and try once more.
 //
 // The worker polls rather than being pushed to. Polling one indexed row every
@@ -94,7 +94,7 @@ async function runRedesign(job) {
   const base64 = photo.toString('base64');
   const mediaType = room.asset_mime || room.mime || 'image/webp';
 
-  /* 1 — Survey. Cached: a room's architecture does not change between
+  /* 1 - Survey. Cached: a room's architecture does not change between
      revisions, so this runs once per uploaded photo. */
   let survey = room.architecture_json;
   if (!survey) {
@@ -110,7 +110,7 @@ async function runRedesign(job) {
 
   if (await jobs.isCancelled(job.id)) return null;
 
-  /* 2 — Design. */
+  /* 2 - Design. */
   await jobs.report(job.id, {
     stage: input.parentRedesignId ? 'Applying your changes' : 'Composing the direction',
     progress: 28,
@@ -142,7 +142,7 @@ async function runRedesign(job) {
 
   if (await jobs.isCancelled(job.id)) return null;
 
-  /* 2b — Plan view. Best-effort: a board without a diagram is still a board. */
+  /* 2b - Plan view. Best-effort: a board without a diagram is still a board. */
   await jobs.report(job.id, { stage: 'Drawing the plan view', progress: 42 });
   try {
     board.floorPlan = normalizeFloorPlan(
@@ -155,7 +155,7 @@ async function runRedesign(job) {
 
   if (await jobs.isCancelled(job.id)) return null;
 
-  /* 3 — Render, then check it. */
+  /* 3 - Render, then check it. */
   let renderBuffer = null;
   let renderMime = null;
   let fidelity = null;
@@ -217,7 +217,7 @@ async function runRedesign(job) {
 
   if (await jobs.isCancelled(job.id)) return null;
 
-  /* 4 — Persist. */
+  /* 4 - Persist. */
   await jobs.report(job.id, { stage: 'Setting the board', progress: 94 });
 
   const revisionNo = await nextRevisionNo(room.id);
@@ -320,7 +320,7 @@ async function tick() {
   }
 }
 
-/** Start polling. Idempotent — calling it twice does not double up. */
+/** Start polling. Idempotent - calling it twice does not double up. */
 export function startWorker() {
   if (timer) return;
   const loop = async () => {

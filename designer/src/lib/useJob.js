@@ -6,7 +6,7 @@ import { getJob, cancelJob } from './api.js';
  * Follow a background job to completion.
  *
  * Generation runs on the server now, so the browser's only role is to watch.
- * That means a refresh, a closed tab, or a dropped connection costs nothing —
+ * That means a refresh, a closed tab, or a dropped connection costs nothing -
  * pass the job id back in and polling resumes where it left off.
  *
  * Polling backs off as the job ages: fast while someone is watching the first

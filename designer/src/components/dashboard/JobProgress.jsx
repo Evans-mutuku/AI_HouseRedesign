@@ -5,7 +5,7 @@ import Button from '../ui/Button.jsx';
  * A running generation, shown wherever it is happening.
  *
  * Because the work is on the server now, this is a window onto it rather than
- * the thing holding it up — the copy says so, because "you can close this tab"
+ * the thing holding it up - the copy says so, because "you can close this tab"
  * is genuinely useful information when a job takes a minute.
  */
 export default function JobProgress({ job, onCancel, compact = false }) {
@@ -43,7 +43,7 @@ export default function JobProgress({ job, onCancel, compact = false }) {
               ? job.error || 'Something went wrong.'
               : done
                 ? 'Your board is ready.'
-                : 'Running on our servers — you can close this tab and come back.'}
+                : 'Running on our servers - you can close this tab and come back.'}
           </p>
         </div>
 

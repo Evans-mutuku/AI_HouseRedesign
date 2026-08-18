@@ -17,7 +17,7 @@
 //                              missing.
 //
 // Splitting the vision read from the design work keeps each response small
-// enough to come back as valid JSON reliably, and makes revisions cheap — a
+// enough to come back as valid JSON reliably, and makes revisions cheap - a
 // revision re-runs only the second call.
 
 import { askForJson } from './claude.js';
@@ -55,7 +55,7 @@ const READ_SYSTEM =
 function readPrompt() {
   return `Survey this photograph of a real room. Two jobs: inventory the architecture, and read the space honestly.
 
-ARCHITECTURE — this is the most important part of the task.
+ARCHITECTURE - this is the most important part of the task.
 List EVERY permanent structural feature you can see. Use these types where they apply: ${ARCHITECTURE_TYPES.join(', ')}. Add others if you see them.
 - One entry per distinct feature. If there are two windows of different sizes, that is two entries with count 1 each. If there are three identical windows in a row, that may be one entry with count 3.
 - "location" must be precise and relative to the camera: "centred on the left wall", "far corner, right of the fireplace", "directly behind the sofa".
@@ -66,17 +66,17 @@ DO NOT list as architecture:
 - Plain wall, ceiling, or floor surfaces. Those are exactly what the redesign repaints and refloors, and listing them here freezes them. Put anything structural about them ("sloped ceiling on the left", "boards run toward the camera") in fixedFeatures instead.
 - Light fittings, curtains, blinds, rugs, furniture, or anything else that gets replaced or restyled.
 - Sockets, switches, and thermostats.
-This list is for openings and permanent masonry only — the things an image model erases and a person immediately notices are gone.
+This list is for openings and permanent masonry only - the things an image model erases and a person immediately notices are gone.
 
-"fixedFeatures" — other immovable facts a render must respect: approximate ceiling height, floorboard direction, wall angles, a sloped ceiling, a step in the floor.
+"fixedFeatures" - other immovable facts a render must respect: approximate ceiling height, floorboard direction, wall angles, a sloped ceiling, a step in the floor.
 
-"annotations" — 3 to 6 observations pinned to the photo. "x" and "y" are the marker position as fractions of the image width and height, between 0 and 1, with 0,0 at the top left. "severity" is "issue" for a problem and "asset" for something already working that should be kept. Keep "note" to one sentence.
+"annotations" - 3 to 6 observations pinned to the photo. "x" and "y" are the marker position as fractions of the image width and height, between 0 and 1, with 0,0 at the top left. "severity" is "issue" for a problem and "asset" for something already working that should be kept. Keep "note" to one sentence.
 
-"currentAssessment" — two or three sentences on how the room actually reads right now: light, proportion, what is fighting what. Be specific to THIS room and honest.`;
+"currentAssessment" - two or three sentences on how the room actually reads right now: light, proportion, what is fighting what. Be specific to THIS room and honest.`;
 }
 
 /**
- * Survey the room. Cached on the room row — call once per uploaded photo.
+ * Survey the room. Cached on the room row - call once per uploaded photo.
  */
 export async function readRoom({ base64, mediaType }) {
   const { parsed, model } = await askForJson({
@@ -137,7 +137,7 @@ ${JSON.stringify(previous, null, 1).slice(0, 6000)}
 
 The user has now asked for: "${instruction}"
 
-Apply that change. Keep everything the user did not ask you to change — same palette entries, same items, same wording — unless the requested change genuinely forces a knock-on edit. Explain what moved in "revisionNote". Do not start over.
+Apply that change. Keep everything the user did not ask you to change - same palette entries, same items, same wording - unless the requested change genuinely forces a knock-on edit. Explain what moved in "revisionNote". Do not start over.
 `
     : '';
 
@@ -170,25 +170,25 @@ User's note: ${note || 'none'}
 ${revisionBlock}${homeBlock}${tasteBlock}
 RULES
 
-palette — 4 to 6 real hex colours, pulled from what the light in THIS room is doing. Give each a role.
+palette - 4 to 6 real hex colours, pulled from what the light in THIS room is doing. Give each a role.
 
-plan — every meaningful piece in the room, plus what you would bring in.
+plan - every meaningful piece in the room, plus what you would bring in.
 - "key" is a short stable kebab-case slug of the item, e.g. "oak-credenza". It must be unique and must not change between revisions for the same object.
 - "costCents" is 0 for "keep", "remove", and "move". For "add", it is your honest estimate in minor units of ${currency}.
 - "effort": "easy" is a person alone in an hour; "moderate" is two people or a weekend; "trade" needs an electrician, plumber, or joiner.
-- Never propose removing, covering, blocking, or building over any structural feature listed above. You may re-dress them — new curtains on a window, a repainted door — but they stay.
+- Never propose removing, covering, blocking, or building over any structural feature listed above. You may re-dress them - new curtains on a window, a repainted door - but they stay.
 
-phase — this is what makes the plan usable, so be strict about it.
+phase - this is what makes the plan usable, so be strict about it.
 - "weekend": costs nothing or almost nothing. Rearranging, decluttering, rehanging, swapping a bulb. Someone could do it on Saturday and see a real difference.
 - "month": the meaningful purchases, inside the budget ceiling.
 - "full": the complete direction, including anything needing a trade.
 Every plan and shopping item must carry a phase. Order "phases" weekend, month, full, and write a one-sentence summary for each describing what the room feels like once that phase is done.
 
-budgetSummary — the four totals must be the actual sums of the costCents you assigned, in cents. "withinBudget" is false if totalCents exceeds the ceiling.
+budgetSummary - the four totals must be the actual sums of the costCents you assigned, in cents. "withinBudget" is false if totalCents exceeds the ceiling.
 
-shoppingList — only things to buy, each matching a "key" from an "add" plan item where one exists. "searchQuery" is what you would type into a retailer's search box to find it: material, colour, form, approximate size. No brand names.
+shoppingList - only things to buy, each matching a "key" from an "add" plan item where one exists. "searchQuery" is what you would type into a retailer's search box to find it: material, colour, form, approximate size. No brand names.
 
-imageDirection — 400 to 700 characters describing ONLY what changes visually: wall colour and finish, flooring, the furniture and its materials and colours, textiles, lighting fixtures and their warmth, and decor. Name specific colours and materials. Do NOT mention the camera, the room's shape, the windows, or the doors — those are handled separately and are not yours to describe. Write it as instructions to a photo retoucher, not as a scene description.`;
+imageDirection - 400 to 700 characters describing ONLY what changes visually: wall colour and finish, flooring, the furniture and its materials and colours, textiles, lighting fixtures and their warmth, and decor. Name specific colours and materials. Do NOT mention the camera, the room's shape, the windows, or the doors - those are handled separately and are not yours to describe. Write it as instructions to a photo retoucher, not as a scene description.`;
 }
 
 /**
@@ -227,7 +227,7 @@ const FLOOR_SYSTEM =
 /**
  * A plan view of the redesigned room, as normalised rectangles the client draws
  * as SVG. Separate from the board because the two schemas together exceed what
- * the API will compile into a sampling grammar — and because a failure here
+ * the API will compile into a sampling grammar - and because a failure here
  * should cost us the diagram, not the design.
  */
 export async function planFloor({ base64, mediaType, survey, board }) {
@@ -249,7 +249,7 @@ RULES
 - Estimate the room's real dimensions in metres from the photograph's perspective. Mark "confidence" as "estimated" unless the photo actually shows a measurement.
 - x, y, w, h are fractions of the room's width and length, between 0 and 1, with the origin at the top-left corner of the plan.
 - "features" are the structural items above, placed against the wall they belong to. A window or door sits ON a wall, so its thin dimension should be about 0.02.
-- "furniture" is the redesigned layout — the pieces being kept plus the ones being added. Give each its real footprint, not a uniform box.
+- "furniture" is the redesigned layout - the pieces being kept plus the ones being added. Give each its real footprint, not a uniform box.
 - Nothing may sit in front of a door's swing or block a window.
 - Leave a walkable route through the room, at least 0.7m wide in real terms.
 - "cameraAt" is roughly where the photographer stood.`;
@@ -279,7 +279,7 @@ RULES
  * reimagine a room will reimagine the walls too.
  *
  * So the preservation list is now deterministic, enumerated, and placed both
- * first and last — the two positions a model weights most — while the creative
+ * first and last - the two positions a model weights most - while the creative
  * direction is fenced into the middle and explicitly forbidden from touching
  * structure.
  */
@@ -315,7 +315,7 @@ ${board?.imageDirection || 'Restyle the furnishings, textiles, and finishes to a
 
 PALETTE: ${palette || 'as described above'}
 
-The output must read as an unretouched photograph of this exact room after redecoration — same time of day, same daylight direction, natural shadows, realistic materials.
+The output must read as an unretouched photograph of this exact room after redecoration - same time of day, same daylight direction, natural shadows, realistic materials.
 
 Do not remove, cover, block, curtain over, shrink, widen, or move any window, door, doorway, fireplace, or opening listed above. Do not add or remove walls. Do not change the camera angle, the framing, or the aspect ratio. Do not turn a window into a mirror, a painting, or a blank wall. If a piece of furniture would sit in front of a window or door, place it lower or elsewhere so the opening stays fully visible.`;
 }
@@ -333,7 +333,7 @@ const VERIFY_SYSTEM =
  */
 export async function verifyRender({ before, after, survey }) {
   const expected = (survey?.architecture || [])
-    .map((f) => `- ${f.id} — ${f.count > 1 ? `${f.count} ` : ''}${f.type}, ${f.location}: ${f.description}`)
+    .map((f) => `- ${f.id} - ${f.count > 1 ? `${f.count} ` : ''}${f.type}, ${f.location}: ${f.description}`)
     .join('\n');
 
   const prompt = `The FIRST image is the original room. The SECOND image is an AI-edited redesign of that same room.
@@ -372,8 +372,8 @@ export function reinforceImagePrompt(basePrompt, fidelity) {
 
   return `${basePrompt}
 
-CRITICAL — A PREVIOUS ATTEMPT FAILED. These features were lost and must be reinstated:
+CRITICAL - A PREVIOUS ATTEMPT FAILED. These features were lost and must be reinstated:
 ${complaints}
 
-Render each of them exactly as it appears in the source photograph: same position, same size, same frame, same glazing, same view through it. Leave surrounding furniture clear of them. Getting these right matters more than any stylistic choice above — if a decorative decision conflicts with showing one of these features in full, drop the decoration.`;
+Render each of them exactly as it appears in the source photograph: same position, same size, same frame, same glazing, same view through it. Leave surrounding furniture clear of them. Getting these right matters more than any stylistic choice above - if a decorative decision conflicts with showing one of these features in full, drop the decoration.`;
 }

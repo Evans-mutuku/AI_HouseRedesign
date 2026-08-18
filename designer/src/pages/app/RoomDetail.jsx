@@ -83,7 +83,7 @@ export default function RoomDetail() {
     return () => {
       cancelled = true;
     };
-    // Deliberately keyed on the room only — revision selection is handled below.
+    // Deliberately keyed on the room only - revision selection is handled below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
@@ -457,7 +457,7 @@ export default function RoomDetail() {
         open={confirmDelete}
         onClose={() => !deleting && setConfirmDelete(false)}
         title={`Move “${shownRoom.name}” to trash?`}
-        description={`Every revision, the photo, and the renders go with it — ${formatBytes(shownRoom.bytes)}. You can restore it from the trash for 30 days.`}
+        description={`Every revision, the photo, and the renders go with it - ${formatBytes(shownRoom.bytes)}. You can restore it from the trash for 30 days.`}
         footer={
           <>
             <Button variant="secondary" onClick={() => setConfirmDelete(false)} disabled={deleting}>

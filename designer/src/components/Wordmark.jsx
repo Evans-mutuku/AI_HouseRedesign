@@ -9,7 +9,7 @@ export default function Wordmark({ to = '/', size = 'md', className = '' }) {
     <Link
       to={to}
       className={`inline-flex items-center gap-2.5 text-ink transition-opacity hover:opacity-70 ${className}`}
-      aria-label="STUDIO — home"
+      aria-label="STUDIO - home"
     >
       <span className="text-accent">
         <Logomark size={mark} />

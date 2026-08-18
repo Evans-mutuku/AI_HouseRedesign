@@ -11,7 +11,7 @@ import { formatMoney } from '../../lib/format.js';
  * worklist rather than an article: every buyable line has a checkbox, ticking
  * one records what it really cost, and the totals at the top move as you go.
  *
- * Costs are held in cents throughout — no float ever touches the money path.
+ * Costs are held in cents throughout - no float ever touches the money path.
  */
 
 const PHASE_ICON = { weekend: Icon.Clock, month: Icon.Projects, full: Icon.Sparkle };
@@ -47,7 +47,7 @@ export default function PhasedPlan({
 
   const currency = board.budget?.currency || 'USD';
 
-  // Buyable lines only — a "keep" costs nothing and cannot be ticked off.
+  // Buyable lines only - a "keep" costs nothing and cannot be ticked off.
   const buyable = useMemo(() => {
     const planKeys = new Set(
       board.plan.filter((p) => p.action === 'add').map((p) => p.key),

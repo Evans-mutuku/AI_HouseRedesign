@@ -34,7 +34,7 @@ export function Palette({ palette, animate = false }) {
   );
 }
 
-/** Compact horizontal strip — used where vertical space is tight. */
+/** Compact horizontal strip - used where vertical space is tight. */
 export function PaletteRow({ palette, className = '' }) {
   return (
     <div className={`flex overflow-hidden rounded-[10px] border border-line ${className}`}>

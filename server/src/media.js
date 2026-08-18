@@ -6,8 +6,8 @@
 // short-lived signed URLs, minted for one user and one file, and
 // GET /api/media/:file verifies the signature before streaming the bytes.
 //
-// This keeps <img src> working — the browser cannot attach an Authorization
-// header to an image request — without leaving the files open to the world.
+// This keeps <img src> working - the browser cannot attach an Authorization
+// header to an image request - without leaving the files open to the world.
 
 import { createHmac, randomBytes, timingSafeEqual } from 'node:crypto';
 import { PUBLIC_PREFIX } from './storage.js';
@@ -20,7 +20,7 @@ const SECRET =
   process.env.MEDIA_SIGNING_SECRET ||
   (() => {
     console.warn(
-      '[media] MEDIA_SIGNING_SECRET is not set — using an ephemeral key. Image links will break on restart.',
+      '[media] MEDIA_SIGNING_SECRET is not set - using an ephemeral key. Image links will break on restart.',
     );
     return randomBytes(32).toString('hex');
   })();

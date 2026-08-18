@@ -160,7 +160,7 @@ export default function Rooms() {
         open={Boolean(pendingDelete)}
         onClose={() => !deleting && setPendingDelete(null)}
         title={`Move “${pendingDelete?.name || ''}” to trash?`}
-        description={`Every revision, the photo, and the renders go with it — ${formatBytes(pendingDelete?.bytes || 0)}. You can restore it for 30 days.`}
+        description={`Every revision, the photo, and the renders go with it - ${formatBytes(pendingDelete?.bytes || 0)}. You can restore it for 30 days.`}
         footer={
           <>
             <Button variant="secondary" onClick={() => setPendingDelete(null)} disabled={deleting}>

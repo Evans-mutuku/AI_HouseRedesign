@@ -3,7 +3,7 @@
 // The only unauthenticated route that reads user data, so it is deliberately
 // narrow:
 //
-//   • the token is the whole credential — unguessable, revocable, expiring
+//   • the token is the whole credential - unguessable, revocable, expiring
 //   • it resolves to exactly one revision, never a room or an account
 //   • the response is stripped: no owner identity, no checklist, no budget the
 //     user set, no sibling revisions, no ids that would work elsewhere

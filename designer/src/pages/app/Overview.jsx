@@ -120,13 +120,13 @@ export default function Overview() {
         <Stat
           icon={Icon.Projects}
           label="Rooms"
-          value={rooms?.length ?? '—'}
+          value={rooms?.length ?? '-'}
           sub={stats?.total ? `${pluralize(stats.total, 'revision')} in total` : 'Nothing yet'}
         />
         <Stat
           icon={Icon.Storage}
           label="Storage used"
-          value={storage ? formatBytes(storage.used) : '—'}
+          value={storage ? formatBytes(storage.used) : '-'}
           sub={storage ? `of ${formatBytes(storage.limit)}` : ''}
         />
         <Stat

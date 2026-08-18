@@ -180,7 +180,7 @@ export function DataRow({ label, value, action, className = '' }) {
     >
       <div className="min-w-0">
         <p className="text-sm text-muted">{label}</p>
-        <p className="mt-0.5 truncate text-sm font-medium text-ink">{value || '—'}</p>
+        <p className="mt-0.5 truncate text-sm font-medium text-ink">{value || '-'}</p>
       </div>
       {action}
     </div>

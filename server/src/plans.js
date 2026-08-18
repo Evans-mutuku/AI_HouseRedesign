@@ -1,7 +1,7 @@
 // Plans and the storage quota.
 //
-// Usage is one live SUM over `assets` — the table every stored byte is
-// registered in — rather than a counter column, so the number on the dashboard
+// Usage is one live SUM over `assets` - the table every stored byte is
+// registered in - rather than a counter column, so the number on the dashboard
 // can never drift away from what is really on disk. Deleting a project frees
 // its space the moment the rows go.
 //
@@ -22,7 +22,7 @@ export const PLANS = {
     period: 'forever',
     blurb: 'Enough room for around a hundred redesigns.',
     features: [
-      '500 MB of storage — around 500 redesigns once compressed',
+      '500 MB of storage - around 500 redesigns once compressed',
       'Unlimited revisions on every room',
       'Rendered "after" image, floor plan, and phased budget',
       'Share links, progress tracking, and PDF export',
@@ -37,7 +37,7 @@ export const PLANS = {
     period: 'per month',
     blurb: 'For whole-home projects and client work.',
     features: [
-      '10 GB of storage — 20× the free plan',
+      '10 GB of storage - 20× the free plan',
       'Everything in Free',
       'Whole-home projects with a shared palette',
       'Priority place in the render queue',
@@ -50,7 +50,7 @@ export const DEFAULT_PLAN = 'free';
 /**
  * Headroom reserved up front so a redesign can never start and then fail to be
  * stored. Everything is re-encoded to WebP (see assets.js), so an original and
- * a render — with their thumbnails — land at roughly 400–900 KB combined. 2 MB
+ * a render - with their thumbnails - land at roughly 400–900 KB combined. 2 MB
  * is generous cover for a large, detailed render.
  */
 export const RENDER_RESERVE_BYTES = 2 * MB;
@@ -73,7 +73,7 @@ export async function usedBytes(userId) {
 }
 
 /**
- * How much of the usage belongs to soft-deleted work — i.e. what emptying the
+ * How much of the usage belongs to soft-deleted work - i.e. what emptying the
  * trash would give back.
  */
 export async function trashedBytes(userId) {

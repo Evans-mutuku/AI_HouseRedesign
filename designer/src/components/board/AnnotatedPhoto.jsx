@@ -93,7 +93,7 @@ export default function AnnotatedPhoto({ src, annotations = [], className = '' }
                 </span>
                 <span className="leading-relaxed">
                   <span className="font-medium text-ink">{pin.title}</span>
-                  {pin.note && <span className="text-muted"> — {pin.note}</span>}
+                  {pin.note && <span className="text-muted"> - {pin.note}</span>}
                 </span>
               </li>
             );

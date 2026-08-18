@@ -8,7 +8,7 @@ const MAX_BYTES = 8 * 1024 * 1024;
 
 /**
  * Drop target for the room photo. Validates type and size here so an obviously
- * bad file never becomes a round trip — the server enforces the same limits.
+ * bad file never becomes a round trip - the server enforces the same limits.
  */
 export default function UploadZone({ onSelect, onError }) {
   const inputRef = useRef(null);
@@ -34,7 +34,7 @@ export default function UploadZone({ onSelect, onError }) {
       }
       if (file.size > MAX_BYTES) {
         fail(
-          `That image is ${formatBytes(file.size)} — the limit is 8 MB. Try a smaller file.`,
+          `That image is ${formatBytes(file.size)} - the limit is 8 MB. Try a smaller file.`,
         );
         return;
       }
@@ -78,7 +78,7 @@ export default function UploadZone({ onSelect, onError }) {
           {dragging ? 'Drop it here' : 'Drop a photo of your room'}
         </span>
         <span className="max-w-sm text-sm leading-relaxed text-muted">
-          Or click to browse. One image — JPG, PNG, or WebP, up to 8 MB. This
+          Or click to browse. One image - JPG, PNG, or WebP, up to 8 MB. This
           becomes your <span className="text-ink">before</span>.
         </span>
 

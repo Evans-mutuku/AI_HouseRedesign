@@ -3,14 +3,14 @@
 // The browser signs in with the Firebase Web SDK and sends the resulting ID
 // token as `Authorization: Bearer <token>`. Here we verify that token
 // cryptographically against Google's published signing keys and map it to a row
-// in `users`. Every data route hangs off `req.user.id` that this produces —
+// in `users`. Every data route hangs off `req.user.id` that this produces -
 // there is no client-supplied identifier anywhere in the system, so a caller
 // cannot ask for another account's rooms, redesigns, or images.
 //
 // Verification is done directly against the Firebase JWKS rather than through
 // firebase-admin: it needs only the public project id (no service-account key
 // to distribute or leak) and performs the same checks firebase-admin's
-// verifyIdToken does — RS256 signature against Google's rotating keys, plus
+// verifyIdToken does - RS256 signature against Google's rotating keys, plus
 // issuer, audience, and expiry. The one thing it does not do is consult the
 // revocation list, so a token stays valid for its (max 1 hour) lifetime even if
 // the session is revoked server-side.
@@ -25,7 +25,7 @@ const PROJECT_ID = process.env.FIREBASE_PROJECT_ID || '';
 
 if (!PROJECT_ID) {
   console.warn(
-    '[auth] FIREBASE_PROJECT_ID is not set — every authenticated request will 503.',
+    '[auth] FIREBASE_PROJECT_ID is not set - every authenticated request will 503.',
   );
 }
 

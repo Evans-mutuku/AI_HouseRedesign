@@ -1,4 +1,4 @@
-// OpenAI gpt-image-1 integration — renders the "after" by EDITING the user's
+// OpenAI gpt-image-1 integration - renders the "after" by EDITING the user's
 // actual room photo (images/edits endpoint), so the result is the same room
 // restyled rather than an unrelated generated scene.
 //
@@ -27,7 +27,7 @@ export function imagesEnabled() {
  * Pick the output size whose aspect ratio is closest to the source.
  *
  * This matters more than it looks. The previous build asked for 1536×1024 for
- * every upload, so a portrait photo of a room came back reframed to landscape —
+ * every upload, so a portrait photo of a room came back reframed to landscape -
  * and whatever sat at the top and bottom of the original, very often a tall
  * window or a door head, was simply cropped out of existence. Matching the
  * source shape removes a whole class of "it deleted my window" failures before

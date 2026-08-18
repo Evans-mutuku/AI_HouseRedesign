@@ -8,7 +8,7 @@ import Button from '../ui/Button.jsx';
  *
  * This drives a masked edit: everything outside the box comes back untouched,
  * pixel for pixel. That is the difference between "restyle my room" and "just
- * do something about that fireplace wall" — and it removes the biggest
+ * do something about that fireplace wall" - and it removes the biggest
  * complaint about whole-image edits, which is that they quietly alter things
  * you were happy with.
  *
@@ -83,7 +83,7 @@ export default function RegionPicker({ src, value, onChange, className = '' }) {
       >
         <img
           src={src}
-          alt="Your room — drag to select the area to change"
+          alt="Your room - drag to select the area to change"
           className="block h-auto w-full"
           draggable={false}
         />
@@ -121,7 +121,7 @@ export default function RegionPicker({ src, value, onChange, className = '' }) {
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
         <p className="text-xs leading-relaxed text-muted">
           {value
-            ? 'Only this area will be edited — everything else stays exactly as it is.'
+            ? 'Only this area will be edited - everything else stays exactly as it is.'
             : 'Optional. Leave it clear to restyle the whole room.'}
         </p>
         {value && (

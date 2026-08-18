@@ -34,7 +34,7 @@ const STEPS = [
     n: '03',
     icon: Icon.Compare,
     title: 'A direction returns',
-    body: 'A full board — plus a render of your actual room, restyled from the same viewpoint.',
+    body: 'A full board - plus a render of your actual room, restyled from the same viewpoint.',
   },
 ];
 
@@ -47,7 +47,7 @@ const CRAFT = [
   {
     icon: Icon.Layout,
     title: 'Keep, remove, add',
-    body: 'Every piece accounted for, with the reasoning — not a wishlist of furniture you do not own.',
+    body: 'Every piece accounted for, with the reasoning - not a wishlist of furniture you do not own.',
   },
   {
     icon: Icon.Materials,
@@ -57,7 +57,7 @@ const CRAFT = [
   {
     icon: Icon.Lighting,
     title: 'A lighting plan',
-    body: 'Colour temperature, layers, and what to replace first — usually the cheapest real change.',
+    body: 'Colour temperature, layers, and what to replace first - usually the cheapest real change.',
   },
   {
     icon: Icon.Shopping,
@@ -67,7 +67,7 @@ const CRAFT = [
   {
     icon: Icon.Photo,
     title: 'A render of your room',
-    body: 'Your photograph edited into the new direction — same walls, same windows, same camera.',
+    body: 'Your photograph edited into the new direction - same walls, same windows, same camera.',
   },
 ];
 
@@ -88,7 +88,7 @@ export default function Landing() {
 
   return (
     <div className="min-h-screen bg-canvas">
-      {/* — Nav ————————————————————————————————————————————— */}
+      {/* - Nav --------------------------------------------- */}
       <header
         className={`sticky top-0 z-40 border-b transition-colors duration-300 ${
           scrolled
@@ -174,7 +174,7 @@ export default function Landing() {
       </header>
 
       <main>
-        {/* — Hero ————————————————————————————————————————— */}
+        {/* - Hero ----------------------------------------- */}
         <section className="mx-auto max-w-6xl px-5 pb-20 pt-14 sm:px-8 sm:pb-28 sm:pt-20">
           <div className="grid items-center gap-14 lg:grid-cols-12 lg:gap-12">
             <div className="hd-rise lg:col-span-6">
@@ -187,8 +187,8 @@ export default function Landing() {
               </h1>
 
               <p className="text-lead mt-6 max-w-lg text-muted">
-                Upload one photo. Get back a considered direction — palette,
-                materials, light, a keep-and-replace plan — and a render of the
+                Upload one photo. Get back a considered direction - palette,
+                materials, light, a keep-and-replace plan - and a render of the
                 same room, redesigned.
               </p>
 
@@ -216,7 +216,7 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* — How it works ————————————————————————————————— */}
+        {/* - How it works --------------------------------- */}
         <section
           id="how"
           className="scroll-mt-20 border-t border-line bg-surface py-20 sm:py-28"
@@ -246,7 +246,7 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* — What you get ————————————————————————————————— */}
+        {/* - What you get --------------------------------- */}
         <section id="craft" className="scroll-mt-20 py-20 sm:py-28">
           <div className="mx-auto max-w-6xl px-5 sm:px-8">
             <div className="max-w-2xl">
@@ -280,7 +280,7 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* — Pricing ——————————————————————————————————————— */}
+        {/* - Pricing --------------------------------------- */}
         <section
           id="pricing"
           className="scroll-mt-20 border-t border-line bg-surface py-20 sm:py-28"
@@ -356,7 +356,7 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* — Close ————————————————————————————————————————— */}
+        {/* - Close ----------------------------------------- */}
         <section className="border-t border-line py-20 sm:py-28">
           <div className="mx-auto max-w-3xl px-5 text-center sm:px-8">
             <h2 className="font-display text-display font-semibold text-ink">
@@ -389,7 +389,7 @@ export default function Landing() {
   );
 }
 
-/* — The hero visual: a real board, rendered from real data ——————————— */
+/* - The hero visual: a real board, rendered from real data ----------- */
 
 function BoardPreview() {
   return (

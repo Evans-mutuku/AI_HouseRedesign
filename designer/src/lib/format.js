@@ -52,7 +52,7 @@ export const pluralize = (n, one, many = `${one}s`) =>
 /**
  * Money, from minor units. Every amount in the product is carried in cents so
  * nothing ever accumulates float error; this is the only place it becomes a
- * string. Whole amounts drop the decimals — "$1,040" reads better than
+ * string. Whole amounts drop the decimals - "$1,040" reads better than
  * "$1,040.00" on a plan you are skimming.
  */
 export function formatMoney(cents, currency = 'USD') {
@@ -66,7 +66,7 @@ export function formatMoney(cents, currency = 'USD') {
       maximumFractionDigits: whole ? 0 : 2,
     });
   } catch {
-    // Unknown currency code — show the number and the code rather than throwing.
+    // Unknown currency code - show the number and the code rather than throwing.
     return `${amount.toFixed(whole ? 0 : 2)} ${currency}`;
   }
 }

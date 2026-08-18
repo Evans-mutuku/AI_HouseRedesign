@@ -119,7 +119,7 @@ CREATE INDEX IF NOT EXISTS idx_rooms_home ON rooms(home_id) WHERE deleted_at IS 
 -- ── Redesigns ───────────────────────────────────────────────────────────────
 -- A revision. `parent_id` chains them; `revision_no` is 1-based per room.
 -- `instruction` is what the user asked for on this pass ("darker walls, keep
--- the sofa") — null on the first.
+-- the sofa") - null on the first.
 
 CREATE TABLE IF NOT EXISTS redesigns (
   id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),

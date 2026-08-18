@@ -135,7 +135,7 @@ export async function getJob(jobId, userId) {
   return rows[0] || null;
 }
 
-/** Anything still in flight for this user — used to restore the UI on reload. */
+/** Anything still in flight for this user - used to restore the UI on reload. */
 export async function activeJobs(userId) {
   const { rows } = await query(
     `SELECT * FROM jobs

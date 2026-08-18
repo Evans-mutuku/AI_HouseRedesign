@@ -1,6 +1,6 @@
 // Brings data written by earlier versions up to the current shape.
 //
-// Runs automatically after the schema migration and is idempotent — every step
+// Runs automatically after the schema migration and is idempotent - every step
 // selects only rows that have not been converted yet, so re-running it is a
 // no-op. Nothing is destructive: original files stay exactly as they are on
 // disk and are simply registered in `assets` at their real size, with a
@@ -24,7 +24,7 @@ async function registerImage({ userId, storageKey, kind }) {
 
   const buffer = await storage.read(storageKey);
   if (!buffer) {
-    log(`skipping ${storageKey} — file is gone`);
+    log(`skipping ${storageKey} - file is gone`);
     return null;
   }
 
@@ -116,7 +116,7 @@ const slug = (text, i) =>
 /**
  * The old board had `furniture` and an untyped `shoppingList` with price tiers
  * rather than amounts. There is no way to invent the costs it never captured,
- * so the money fields stay zero and `budget.note` says why — better an honest
+ * so the money fields stay zero and `budget.note` says why - better an honest
  * blank than a fabricated total.
  */
 function upgradeBoard(old) {

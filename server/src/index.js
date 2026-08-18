@@ -35,7 +35,7 @@ app.get('/api/health', (_req, res) => {
   });
 });
 
-// Distinct prefixes, so a request passes through exactly one router — and
+// Distinct prefixes, so a request passes through exactly one router - and
 // therefore verifies its token exactly once. `/api/share` is the one public
 // data route; it authenticates on the token in the path instead.
 app.use('/api/media', mediaRoutes);
@@ -57,10 +57,10 @@ app.listen(PORT, () => {
   void storage; // ensure the upload dir exists at boot
   console.log(`[server] listening on http://localhost:${PORT}`);
   if (!process.env.ANTHROPIC_API_KEY) {
-    console.warn('[server] ANTHROPIC_API_KEY is not set — redesigns will fail.');
+    console.warn('[server] ANTHROPIC_API_KEY is not set - redesigns will fail.');
   }
   if (!authConfigured()) {
-    console.warn('[server] FIREBASE_PROJECT_ID is not set — sign-in will fail.');
+    console.warn('[server] FIREBASE_PROJECT_ID is not set - sign-in will fail.');
   }
 
   // Generation runs out of band; the janitor clears expired trash.

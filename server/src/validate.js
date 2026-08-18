@@ -100,7 +100,7 @@ export function validateSurvey(obj) {
     fixedFeatures: arr(obj.fixedFeatures).map(str).filter(Boolean).slice(0, 12),
     annotations: normAnnotations(obj.annotations),
   };
-  // The architecture list is the whole point of this call — a survey without
+  // The architecture list is the whole point of this call - a survey without
   // one would let the render prompt fall back to a vague "preserve everything",
   // which is exactly the failure mode we are engineering away.
   if (!survey.architecture.length) {
@@ -209,7 +209,7 @@ function normPhases(raw, plan) {
  */
 function computeBudget(raw, plan, shoppingList, budgetCents, currency) {
   // A shopping row that shares a key with an "add" plan row is the same
-  // purchase described twice — count it once.
+  // purchase described twice - count it once.
   const planKeys = new Set(plan.filter((p) => p.action === 'add').map((p) => p.key));
   const lines = [
     ...plan.filter((p) => p.action === 'add'),
@@ -318,7 +318,7 @@ export function validateBoard(obj, context = {}) {
   return result;
 }
 
-/** Normalize the render fidelity report. Never throws — it is advisory. */
+/** Normalize the render fidelity report. Never throws - it is advisory. */
 export function normalizeFidelity(raw) {
   if (!raw || typeof raw !== 'object') return null;
   const missing = arr(raw.missing)

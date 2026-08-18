@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { Close } from '../Icon.jsx';
 
 /**
- * A small, focused dialog — used for destructive confirmations and the upgrade
+ * A small, focused dialog - used for destructive confirmations and the upgrade
  * flow. Closes on Escape and on backdrop click, restores focus on unmount, and
  * locks body scroll while open.
  */
