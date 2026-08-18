@@ -10,9 +10,10 @@ import {
   Meter,
   SectionHeader,
 } from '../../components/ui/Surface.jsx';
-import ProjectCard, { ProjectCardSkeleton } from '../../components/dashboard/ProjectCard.jsx';
+import RoomCard, { RoomCardSkeleton } from '../../components/dashboard/RoomCard.jsx';
+import JobProgress from '../../components/dashboard/JobProgress.jsx';
 import Icon from '../../components/Icon.jsx';
-import { listRedesigns } from '../../lib/api.js';
+import { listJobs, listRooms } from '../../lib/api.js';
 import { useResource } from '../../lib/useResource.js';
 import { formatBytes, pluralize } from '../../lib/format.js';
 import { useAuth, displayNameOf } from '../../lib/authContext.js';
@@ -43,11 +44,14 @@ function Stat({ icon: StatIcon, label, value, sub }) {
 
 export default function Overview() {
   const { user, account, storage, plan } = useAuth();
-  const { data: projects, error, clearError } = useResource(listRedesigns);
+  const { data: rooms, error, clearError } = useResource(listRooms);
+  // Anything still generating, so a reload or a second device picks it back up.
+  const { data: jobs } = useResource(listJobs);
 
   const stats = account?.projects;
   const nearlyFull = storage ? storage.percent >= 80 : false;
-  const recent = projects?.slice(0, RECENT_COUNT) || [];
+  const recent = rooms?.slice(0, RECENT_COUNT) || [];
+  const running = (jobs || []).filter((j) => ['queued', 'running'].includes(j.status));
 
   return (
     <div className="space-y-10">
@@ -60,7 +64,7 @@ export default function Overview() {
           </h2>
           <p className="mt-2 text-sm text-muted">
             {stats?.total
-              ? `${pluralize(stats.total, 'room')} redesigned so far.`
+              ? `${pluralize(stats.total, 'revision')} across ${pluralize(rooms?.length ?? 0, 'room')}.`
               : 'Upload a room photo and the studio will read it.'}
           </p>
         </div>
@@ -75,13 +79,26 @@ export default function Overview() {
         </Banner>
       )}
 
+      {/* Anything currently generating */}
+      {running.length > 0 && (
+        <div className="space-y-3">
+          {running.map((job) => (
+            <Link
+              key={job.id}
+              to={job.roomId ? `/app/rooms/${job.roomId}` : '/app/rooms'}
+              className="block"
+            >
+              <JobProgress job={job} compact />
+            </Link>
+          ))}
+        </div>
+      )}
+
       {nearlyFull && (
         <Banner
           tone={storage.percent >= 95 ? 'danger' : 'warn'}
           title={
-            storage.percent >= 95
-              ? 'You are out of storage'
-              : 'Your storage is nearly full'
+            storage.percent >= 95 ? 'You are out of storage' : 'Your storage is nearly full'
           }
           action={
             <Button as={Link} to="/app/storage" size="sm" variant="secondary">
@@ -89,8 +106,12 @@ export default function Overview() {
             </Button>
           }
         >
-          {formatBytes(storage.used)} of {formatBytes(storage.limit)} used. Delete
-          a project to free space{plan === 'pro' ? '.' : ', or move to Pro for 10 GB.'}
+          {formatBytes(storage.used)} of {formatBytes(storage.limit)} used.
+          {storage.trashed > 0
+            ? ` Emptying your trash would free ${formatBytes(storage.trashed)}.`
+            : plan === 'pro'
+              ? ' Delete a room to free space.'
+              : ' Delete a room, or move to Pro for 10 GB.'}
         </Banner>
       )}
 
@@ -98,9 +119,9 @@ export default function Overview() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Stat
           icon={Icon.Projects}
-          label="Projects"
-          value={stats?.total ?? '—'}
-          sub={stats?.total ? `${stats.rendered} with a render` : 'Nothing yet'}
+          label="Rooms"
+          value={rooms?.length ?? '—'}
+          sub={stats?.total ? `${pluralize(stats.total, 'revision')} in total` : 'Nothing yet'}
         />
         <Stat
           icon={Icon.Storage}
@@ -116,7 +137,7 @@ export default function Overview() {
         />
       </div>
 
-      {/* Storage meter, expanded */}
+      {/* Storage meter */}
       <Card>
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
@@ -142,13 +163,13 @@ export default function Overview() {
       {/* Recent work */}
       <section>
         <SectionHeader
-          title="Recent projects"
-          description="Every board you have made, newest first."
+          title="Recent rooms"
+          description="Each room keeps its whole revision history."
           actions={
-            projects?.length > RECENT_COUNT ? (
+            rooms?.length > RECENT_COUNT ? (
               <Button
                 as={Link}
-                to="/app/projects"
+                to="/app/rooms"
                 variant="ghost"
                 size="sm"
                 iconRight={Icon.ArrowRight}
@@ -160,23 +181,23 @@ export default function Overview() {
         />
 
         <div className="mt-6">
-          {projects === null ? (
+          {rooms === null ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 3 }).map((_, i) => (
-                <ProjectCardSkeleton key={i} />
+                <RoomCardSkeleton key={i} />
               ))}
             </div>
           ) : recent.length ? (
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {recent.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+              {recent.map((room) => (
+                <RoomCard key={room.id} room={room} />
               ))}
             </div>
           ) : (
             <EmptyState
               icon={Icon.Photo}
-              title="No redesigns yet"
-              description="Upload a photo of a room and the studio will return a palette, a materials plan, and a render of the same space."
+              title="No rooms yet"
+              description="Upload a photo and the studio will return a palette, a costed and phased plan, a floor plan, and a render of the same space."
               action={
                 <Button as={Link} to="/app/new" icon={Icon.Plus}>
                   Start your first redesign

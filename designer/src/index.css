@@ -168,3 +168,86 @@ body {
   .hd-spin { animation-duration: 2.4s; }
   .reveal { opacity: 1; transform: none; transition: none; }
 }
+
+/* ============================================================================
+   PRINT — the PDF export
+   ----------------------------------------------------------------------------
+   "Export to PDF" is the browser's own print-to-PDF, driven by this stylesheet.
+   No server renderer, no extra dependency, and the output is a genuinely usable
+   client document: chrome and controls drop away, the board reflows to a single
+   column, and nothing important is allowed to break across a page.
+   ========================================================================= */
+@media print {
+  /* Anything interactive or navigational has no business on paper. */
+  .no-print,
+  header.sticky,
+  aside,
+  nav,
+  button:not(.print-keep) {
+    display: none !important;
+  }
+
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+
+  /* The dashboard shell constrains scrolling; on paper it must not. */
+  .thin-scroll,
+  main {
+    overflow: visible !important;
+    height: auto !important;
+    max-height: none !important;
+  }
+
+  /* Collapse the app's fixed layout into one flowing column. */
+  .grid {
+    display: block !important;
+  }
+
+  /* Reveal-on-scroll never runs during printing — show everything. */
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Keep a section, a card, or a plan item off a page fold. */
+  section,
+  figure,
+  li,
+  .rounded-\[14px\],
+  .rounded-\[16px\] {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+    page-break-after: avoid;
+  }
+
+  /* Browsers strip backgrounds by default; the palette IS the content here. */
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  img,
+  svg {
+    max-width: 100% !important;
+    break-inside: avoid;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @page {
+    margin: 16mm 14mm;
+  }
+}

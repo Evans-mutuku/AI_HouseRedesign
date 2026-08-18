@@ -53,7 +53,10 @@ export default function RoomDetail() {
   const loadRoom = useCallback(async () => {
     try {
       const data = await getRoom(id);
-      setRoom(data);
+      // Tag the state with the room it describes, so a slow response for a room
+      // we have already navigated away from is ignored rather than painted over
+      // the new one.
+      setRoom({ ...data, _for: id });
       setLoadError('');
       // Follow a job that was already running when the page opened, so a reload
       // mid-generation picks straight back up.
@@ -68,14 +71,15 @@ export default function RoomDetail() {
 
   useEffect(() => {
     let cancelled = false;
-    setRoom(null);
-    setRevision(null);
-    loadRoom().then((data) => {
-      if (cancelled || !data) return;
-      // Default to the newest revision unless the URL names one.
-      const target = selectedId || data.revisions?.[0]?.id;
-      if (target) setParams({ r: target }, { replace: true });
-    });
+    // Deferred so no state is written during the effect body itself.
+    Promise.resolve()
+      .then(loadRoom)
+      .then((data) => {
+        if (cancelled || !data) return;
+        // Default to the newest revision unless the URL already names one.
+        const target = selectedId || data.revisions?.[0]?.id;
+        if (target) setParams({ r: target }, { replace: true });
+      });
     return () => {
       cancelled = true;
     };
@@ -83,28 +87,33 @@ export default function RoomDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  // Load whichever revision is selected.
+  // Load whichever revision is selected. Results carry the id they belong to,
+  // so switching revisions quickly cannot leave the wrong board on screen.
   useEffect(() => {
     if (!selectedId) return undefined;
     let cancelled = false;
-    setRevision(null);
-    setPaints(null);
     getRedesign(selectedId)
       .then((data) => {
-        if (!cancelled) setRevision(data);
+        if (!cancelled) setRevision({ ...data, _for: selectedId });
       })
       .catch((err) => {
         if (!cancelled) setActionError(err.message);
       });
     getPaints(selectedId)
       .then((data) => {
-        if (!cancelled) setPaints(data);
+        if (!cancelled) setPaints({ ...data, _for: selectedId });
       })
       .catch(() => {});
     return () => {
       cancelled = true;
     };
   }, [selectedId]);
+
+  // Never render state that belongs to a different room or revision than the
+  // one currently in the URL.
+  const shownRoom = room?._for === id ? room : null;
+  const shownRevision = revision?._for === selectedId ? revision : null;
+  const shownPaints = paints?._for === selectedId ? paints : null;
 
   /* ── The running job ───────────────────────────────────────────────────── */
 
@@ -177,7 +186,7 @@ export default function RoomDetail() {
 
   const rename = async (name) => {
     setRenaming(false);
-    if (!name?.trim() || name === room.name) return;
+    if (!name?.trim() || name === shownRoom?.name) return;
     try {
       await updateRoom(id, { name: name.trim() });
       setRoom((prev) => (prev ? { ...prev, name: name.trim() } : prev));
@@ -213,8 +222,8 @@ export default function RoomDetail() {
   /* ── Render ────────────────────────────────────────────────────────────── */
 
   const annotations = useMemo(
-    () => room?.architecture?.annotations || [],
-    [room],
+    () => shownRoom?.architecture?.annotations || [],
+    [shownRoom],
   );
 
   if (loadError) {
@@ -239,7 +248,7 @@ export default function RoomDetail() {
     );
   }
 
-  if (!room) {
+  if (!shownRoom) {
     return (
       <div className="space-y-6">
         <BackLink />
@@ -266,15 +275,15 @@ export default function RoomDetail() {
       <div className="flex flex-col gap-5 border-b border-line pb-8 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
-            <Badge tone="accent">{room.roomType || 'Room'}</Badge>
-            {room.homeName && <Badge icon={Icon.Overview}>{room.homeName}</Badge>}
+            <Badge tone="accent">{shownRoom.roomType || 'Room'}</Badge>
+            {shownRoom.homeName && <Badge icon={Icon.Overview}>{shownRoom.homeName}</Badge>}
             {revision?.style && <Badge>{revision.style}</Badge>}
           </div>
 
           {renaming ? (
             <input
               autoFocus
-              defaultValue={room.name}
+              defaultValue={shownRoom.name}
               onBlur={(e) => rename(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') rename(e.target.value);
@@ -285,7 +294,7 @@ export default function RoomDetail() {
             />
           ) : (
             <h2 className="group mt-4 flex items-center gap-2 font-display text-title font-semibold text-ink">
-              {room.name}
+              {shownRoom.name}
               <button
                 type="button"
                 onClick={() => setRenaming(true)}
@@ -300,14 +309,14 @@ export default function RoomDetail() {
           <p className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted tnum">
             <span className="inline-flex items-center gap-1.5">
               <Icon.Clock size={13} />
-              {formatDate(room.createdAt)}
+              {formatDate(shownRoom.createdAt)}
             </span>
             <span className="inline-flex items-center gap-1.5">
               <Icon.Storage size={13} />
-              {formatBytes(room.bytes)}
+              {formatBytes(shownRoom.bytes)}
             </span>
             <span>
-              {room.revisionCount} revision{room.revisionCount === 1 ? '' : 's'}
+              {shownRoom.revisionCount} revision{shownRoom.revisionCount === 1 ? '' : 's'}
             </span>
           </p>
         </div>
@@ -364,11 +373,11 @@ export default function RoomDetail() {
 
       <div className="grid gap-8 lg:grid-cols-12">
         {/* Timeline */}
-        {room.revisions?.length > 1 && (
+        {shownRoom.revisions?.length > 1 && (
           <aside className="no-print lg:col-span-4 lg:order-2">
             <div className="lg:sticky lg:top-4">
               <RevisionTimeline
-                revisions={room.revisions}
+                revisions={shownRoom.revisions}
                 selectedId={selectedId}
                 onSelect={(rid) => setParams({ r: rid })}
               />
@@ -377,27 +386,27 @@ export default function RoomDetail() {
         )}
 
         {/* Board */}
-        <div className={room.revisions?.length > 1 ? 'lg:col-span-8 lg:order-1' : 'lg:col-span-12'}>
-          {revision ? (
+        <div className={shownRoom.revisions?.length > 1 ? 'lg:col-span-8 lg:order-1' : 'lg:col-span-12'}>
+          {shownRevision ? (
             <>
-              {revision.instruction && (
+              {shownRevision.instruction && (
                 <Banner tone="info" className="mb-6" title="You asked for">
-                  {revision.instruction}
+                  {shownRevision.instruction}
                 </Banner>
               )}
               <DesignBoard
-                board={revision.board}
-                beforeUrl={revision.before?.url}
-                afterUrl={revision.render?.url}
+                board={shownRevision.board}
+                beforeUrl={shownRevision.before?.url}
+                afterUrl={shownRevision.render?.url}
                 annotations={annotations}
-                paints={paints}
-                checklist={revision.checklist}
+                paints={shownPaints}
+                checklist={shownRevision.checklist}
                 onToggleChecklist={toggleChecklist}
                 onPaintBrandChange={reloadPaints}
-                fidelity={revision.fidelity}
+                fidelity={shownRevision.fidelity}
               />
             </>
-          ) : room.revisions?.length ? (
+          ) : shownRoom.revisions?.length ? (
             <div className="space-y-4">
               <Skeleton className="h-8 w-2/3" />
               <Skeleton className="aspect-[16/10] w-full" />
@@ -426,7 +435,7 @@ export default function RoomDetail() {
         open={reviseOpen}
         onClose={() => setReviseOpen(false)}
         onSubmit={submitRevision}
-        beforeUrl={revision?.before?.url || room.photo?.url}
+        beforeUrl={revision?.before?.url || shownRoom.photo?.url}
         currentBudgetCents={revision?.budgetCents}
         currency={revision?.currency || 'USD'}
         submitting={revising}
@@ -447,8 +456,8 @@ export default function RoomDetail() {
       <Modal
         open={confirmDelete}
         onClose={() => !deleting && setConfirmDelete(false)}
-        title={`Move “${room.name}” to trash?`}
-        description={`Every revision, the photo, and the renders go with it — ${formatBytes(room.bytes)}. You can restore it from the trash for 30 days.`}
+        title={`Move “${shownRoom.name}” to trash?`}
+        description={`Every revision, the photo, and the renders go with it — ${formatBytes(shownRoom.bytes)}. You can restore it from the trash for 30 days.`}
         footer={
           <>
             <Button variant="secondary" onClick={() => setConfirmDelete(false)} disabled={deleting}>

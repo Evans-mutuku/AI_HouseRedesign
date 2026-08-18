@@ -19,7 +19,7 @@ const BACKOFF_AFTER_MS = 15_000;
 export function useJob(jobId, { onDone } = {}) {
   const [job, setJob] = useState(null);
   const [error, setError] = useState('');
-  const startedAt = useRef(Date.now());
+  const startedAt = useRef(0);
   const doneRef = useRef(false);
   const onDoneRef = useRef(onDone);
 
@@ -34,7 +34,7 @@ export function useJob(jobId, { onDone } = {}) {
     let cancelled = false;
     let timer = null;
     doneRef.current = false;
-    startedAt.current = Date.now();
+    startedAt.current = Date.now(); // set here, not during render
 
     const poll = async () => {
       try {

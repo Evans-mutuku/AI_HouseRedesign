@@ -13,7 +13,7 @@ import {
   SectionHeader,
 } from '../../components/ui/Surface.jsx';
 import Icon from '../../components/Icon.jsx';
-import { listRedesigns, setPlan as setPlanRequest } from '../../lib/api.js';
+import { listRooms, setPlan as setPlanRequest } from '../../lib/api.js';
 import { formatBytes, pluralize } from '../../lib/format.js';
 import { useResource } from '../../lib/useResource.js';
 import { useAuth } from '../../lib/authContext.js';
@@ -24,7 +24,7 @@ const ORDER = ['free', 'pro'];
 export default function StoragePlan() {
   const { storage, plan, plans, setAccount, refreshAccount } = useAuth();
 
-  const { data: projects } = useResource(listRedesigns);
+  const { data: rooms } = useResource(listRooms);
 
   const [pendingPlan, setPendingPlan] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -33,8 +33,8 @@ export default function StoragePlan() {
 
   const catalog = ORDER.map((id) => plans.find((p) => p.id === id)).filter(Boolean);
 
-  // The heaviest few projects — the fastest way to reclaim space.
-  const heaviest = [...(projects || [])]
+  // The heaviest few rooms — the fastest way to reclaim space.
+  const heaviest = [...(rooms || [])]
     .sort((a, b) => (b.bytes || 0) - (a.bytes || 0))
     .slice(0, 5);
 
@@ -69,7 +69,7 @@ export default function StoragePlan() {
     <div className="space-y-10">
       <SectionHeader
         title="Storage & plan"
-        description="Every original photo and every render counts against your quota. Deleting a project frees its space immediately."
+        description="Every original photo and every render counts against your quota. Deleting a room frees its space immediately."
       />
 
       {error && (
@@ -114,7 +114,7 @@ export default function StoragePlan() {
             title={percent >= 95 ? 'You are out of storage' : 'Nearly full'}
           >
             New redesigns are blocked once a photo and its render will not fit.
-            Delete a project below{plan === 'pro' ? '.' : ', or upgrade to Pro.'}
+            Delete a room below{plan === 'pro' ? '.' : ', or upgrade to Pro.'}
           </Banner>
         )}
       </Card>
@@ -197,39 +197,34 @@ export default function StoragePlan() {
       {/* What is taking up the space */}
       <section>
         <SectionHeader
-          title="Largest projects"
-          description="The quickest way to free space. Deleting removes the board, the photo, and the render."
+          title="Largest rooms"
+          description="The quickest way to free space. Deleting a room removes its photo, every revision, and every render."
           actions={
-            <Button as={Link} to="/app/projects" variant="ghost" size="sm" iconRight={Icon.ArrowRight}>
-              All projects
+            <Button as={Link} to="/app/rooms" variant="ghost" size="sm" iconRight={Icon.ArrowRight}>
+              All rooms
             </Button>
           }
         />
 
         <Card className="mt-6" padded={false}>
           <div className="px-5 sm:px-6">
-            {!projects ? (
+            {!rooms ? (
               <p className="py-8 text-sm text-muted">Loading…</p>
             ) : heaviest.length ? (
-              heaviest.map((project) => (
+              heaviest.map((room) => (
                 <DataRow
-                  key={project.id}
+                  key={room.id}
                   label={
-                    [project.style, project.budget].filter(Boolean).join(' · ') ||
-                    'Redesign'
+                    [room.homeName, room.style].filter(Boolean).join(' · ') ||
+                    `${room.revisionCount} revision${room.revisionCount === 1 ? '' : 's'}`
                   }
-                  value={project.title}
+                  value={room.name}
                   action={
                     <div className="flex items-center gap-4">
                       <span className="text-sm text-muted tnum">
-                        {formatBytes(project.bytes)}
+                        {formatBytes(room.bytes)}
                       </span>
-                      <Button
-                        as={Link}
-                        to={`/app/projects/${project.id}`}
-                        variant="ghost"
-                        size="sm"
-                      >
+                      <Button as={Link} to={`/app/rooms/${room.id}`} variant="ghost" size="sm">
                         Open
                       </Button>
                     </div>
@@ -244,9 +239,9 @@ export default function StoragePlan() {
           </div>
         </Card>
 
-        {projects?.length > 0 && (
+        {rooms?.length > 0 && (
           <p className="mt-3 text-xs text-muted tnum">
-            {pluralize(projects.length, 'project')} in total.
+            {pluralize(rooms.length, 'room')} in total.
           </p>
         )}
       </section>

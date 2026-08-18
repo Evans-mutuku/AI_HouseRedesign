@@ -5,7 +5,6 @@ import Button from '../../components/ui/Button.jsx';
 import Modal from '../../components/ui/Modal.jsx';
 import { TextArea, TextInput } from '../../components/ui/Field.jsx';
 import {
-  Badge,
   Banner,
   Card,
   EmptyState,

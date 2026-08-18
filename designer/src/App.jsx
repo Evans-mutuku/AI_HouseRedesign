@@ -8,15 +8,19 @@ import Icon from './components/Icon.jsx';
 import Landing from './pages/Landing.jsx';
 import SignIn from './pages/SignIn.jsx';
 import SignUp from './pages/SignUp.jsx';
+import SharedBoard from './pages/SharedBoard.jsx';
 import Overview from './pages/app/Overview.jsx';
 import NewRedesign from './pages/app/NewRedesign.jsx';
-import Projects from './pages/app/Projects.jsx';
-import ProjectDetail from './pages/app/ProjectDetail.jsx';
+import Rooms from './pages/app/Rooms.jsx';
+import RoomDetail from './pages/app/RoomDetail.jsx';
+import Homes from './pages/app/Homes.jsx';
 import StoragePlan from './pages/app/StoragePlan.jsx';
+import Trash from './pages/app/Trash.jsx';
 import Settings from './pages/app/Settings.jsx';
 
 /**
- * Two zones: the public marketing site, and /app behind RequireAuth.
+ * Three zones: the public marketing site, public share links, and /app behind
+ * RequireAuth.
  *
  * The gate is a UX affordance only — the server independently authenticates
  * every API call and scopes it to the caller's account, so a route reached by
@@ -29,6 +33,7 @@ export default function App() {
       <Route path="/" element={<Landing />} />
       <Route path="/signin" element={<SignIn />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/share/:token" element={<SharedBoard />} />
       {/* Common aliases people type or bookmark. */}
       <Route path="/login" element={<Navigate to="/signin" replace />} />
       <Route path="/register" element={<Navigate to="/signup" replace />} />
@@ -44,16 +49,30 @@ export default function App() {
       >
         <Route index element={<Overview />} />
         <Route path="new" element={<NewRedesign />} />
-        <Route path="projects" element={<Projects />} />
-        <Route path="projects/:id" element={<ProjectDetail />} />
+        <Route path="rooms" element={<Rooms />} />
+        <Route path="rooms/:id" element={<RoomDetail />} />
+        <Route path="homes" element={<Homes />} />
         <Route path="storage" element={<StoragePlan />} />
+        <Route path="trash" element={<Trash />} />
         <Route path="settings" element={<Settings />} />
+        {/* The old naming, kept so existing links and bookmarks still land. */}
+        <Route path="projects" element={<Navigate to="/app/rooms" replace />} />
+        <Route path="projects/:id" element={<LegacyProjectRedirect />} />
         <Route path="*" element={<NotFound inApp />} />
       </Route>
 
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
+}
+
+/**
+ * A bookmarked /app/projects/:id points at a redesign id, which now lives under
+ * its room. Rather than guess, send people to the list with the id preserved so
+ * nothing 404s silently.
+ */
+function LegacyProjectRedirect() {
+  return <Navigate to="/app/rooms" replace />;
 }
 
 function NotFound({ inApp = false }) {

@@ -57,6 +57,18 @@ export const NewDesign = (p) => (
   </Svg>
 );
 
+/** Whole-home projects — a terrace of joined roofs, distinct from Overview. */
+export const Home = (p) => (
+  <Svg {...p}>
+    <path d="M2.5 11.5 7 7.5l4.5 4" />
+    <path d="M12.5 11.5 17 7.5l4.5 4" />
+    <path d="M4 11v9h6.5v-9" />
+    <path d="M13.5 11v9H20v-9" />
+    <path d="M6.6 20v-3.4h1.8V20" />
+    <path d="M16.1 20v-3.4h1.8V20" />
+  </Svg>
+);
+
 export const Storage = (p) => (
   <Svg {...p}>
     <ellipse cx="12" cy="6" rx="7.5" ry="3" />
@@ -418,6 +430,7 @@ export function Logomark({ size = 22, className = '' }) {
 
 const Icon = {
   Overview,
+  Home,
   Projects,
   NewDesign,
   Storage,
