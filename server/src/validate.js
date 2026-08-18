@@ -233,7 +233,7 @@ function computeBudget(raw, plan, shoppingList, budgetCents, currency) {
   };
 }
 
-function normFloorPlan(raw) {
+export function normalizeFloorPlan(raw) {
   if (!raw || typeof raw !== 'object') return null;
 
   const features = arr(raw.features)
@@ -303,7 +303,8 @@ export function validateBoard(obj, context = {}) {
     layoutNotes: str(obj.layoutNotes),
     decor: normDecor(obj.decor),
     shoppingList,
-    floorPlan: normFloorPlan(obj.floorPlan),
+    // Filled in by a second call; see worker.js.
+    floorPlan: normalizeFloorPlan(obj.floorPlan),
     imageDirection: str(obj.imageDirection) || str(obj.imagePrompt),
   };
 

@@ -21,6 +21,12 @@
 // revision re-runs only the second call.
 
 import { askForJson } from './claude.js';
+import {
+  SURVEY_SCHEMA,
+  BOARD_SCHEMA,
+  FLOORPLAN_SCHEMA,
+  FIDELITY_SCHEMA,
+} from './schemas.js';
 
 /* ── 1. Reading the room ─────────────────────────────────────────────────── */
 
@@ -49,27 +55,18 @@ const READ_SYSTEM =
 function readPrompt() {
   return `Survey this photograph of a real room. Two jobs: inventory the architecture, and read the space honestly.
 
-Return ONLY a JSON object with this exact shape:
-{
-  "roomType": string,
-  "cameraView": string,
-  "currentAssessment": string,
-  "architecture": [
-    { "id": string, "type": string, "count": number, "location": string, "description": string }
-  ],
-  "fixedFeatures": [string],
-  "annotations": [
-    { "x": number, "y": number, "title": string, "note": string, "severity": "issue" | "asset" }
-  ]
-}
-
 ARCHITECTURE — this is the most important part of the task.
 List EVERY permanent structural feature you can see. Use these types where they apply: ${ARCHITECTURE_TYPES.join(', ')}. Add others if you see them.
 - One entry per distinct feature. If there are two windows of different sizes, that is two entries with count 1 each. If there are three identical windows in a row, that may be one entry with count 3.
 - "location" must be precise and relative to the camera: "centred on the left wall", "far corner, right of the fireplace", "directly behind the sofa".
 - "description" must name the things a renderer could get wrong: frame colour, glazing bars and how many panes, whether a door is panelled or flush, which way it opens, sill depth, what is visible through the glass, hearth material.
-- Do not list furniture, rugs, lamps, or anything movable. Only what is built into the room.
-- Be exhaustive. A window you fail to list is a window that will be erased from the redesign.
+- Be exhaustive about openings. A window you fail to list is a window that will be erased from the redesign.
+
+DO NOT list as architecture:
+- Plain wall, ceiling, or floor surfaces. Those are exactly what the redesign repaints and refloors, and listing them here freezes them. Put anything structural about them ("sloped ceiling on the left", "boards run toward the camera") in fixedFeatures instead.
+- Light fittings, curtains, blinds, rugs, furniture, or anything else that gets replaced or restyled.
+- Sockets, switches, and thermostats.
+This list is for openings and permanent masonry only — the things an image model erases and a person immediately notices are gone.
 
 "fixedFeatures" — other immovable facts a render must respect: approximate ceiling height, floorboard direction, wall angles, a sloped ceiling, a step in the floor.
 
@@ -86,7 +83,9 @@ export async function readRoom({ base64, mediaType }) {
     images: [{ base64, mediaType }],
     system: READ_SYSTEM,
     prompt: readPrompt(),
-    maxTokens: 3000,
+    schema: SURVEY_SCHEMA,
+    effort: 'high',
+    maxTokens: 6000,
     label: 'room survey',
   });
   return { survey: parsed, model };
@@ -169,39 +168,6 @@ Style: ${styleLine}
 ${budgetBlock}
 User's note: ${note || 'none'}
 ${revisionBlock}${homeBlock}${tasteBlock}
-Return ONLY a JSON object with this exact shape:
-{
-  "roomType": string,
-  "designConcept": string,
-  "revisionNote": string,
-  "palette": [{ "name": string, "hex": string, "role": string }],
-  "lighting": string,
-  "materials": [{ "name": string, "where": string }],
-  "plan": [
-    {
-      "key": string,
-      "action": "keep" | "remove" | "add" | "move",
-      "item": string,
-      "rationale": string,
-      "phase": "weekend" | "month" | "full",
-      "costCents": number,
-      "effort": "easy" | "moderate" | "trade"
-    }
-  ],
-  "phases": [{ "id": "weekend" | "month" | "full", "title": string, "summary": string }],
-  "budgetSummary": { "currency": string, "totalCents": number, "weekendCents": number, "monthCents": number, "fullCents": number, "withinBudget": boolean, "note": string },
-  "layoutNotes": string,
-  "decor": [{ "item": string, "note": string }],
-  "shoppingList": [{ "key": string, "item": string, "costCents": number, "phase": "weekend" | "month" | "full", "note": string, "searchQuery": string }],
-  "floorPlan": {
-    "widthM": number, "lengthM": number, "confidence": "measured" | "estimated",
-    "cameraAt": { "x": number, "y": number },
-    "features": [{ "type": string, "label": string, "x": number, "y": number, "w": number, "h": number }],
-    "furniture": [{ "name": string, "x": number, "y": number, "w": number, "h": number }]
-  },
-  "imageDirection": string
-}
-
 RULES
 
 palette — 4 to 6 real hex colours, pulled from what the light in THIS room is doing. Give each a role.
@@ -221,13 +187,6 @@ Every plan and shopping item must carry a phase. Order "phases" weekend, month, 
 budgetSummary — the four totals must be the actual sums of the costCents you assigned, in cents. "withinBudget" is false if totalCents exceeds the ceiling.
 
 shoppingList — only things to buy, each matching a "key" from an "add" plan item where one exists. "searchQuery" is what you would type into a retailer's search box to find it: material, colour, form, approximate size. No brand names.
-
-floorPlan — a plan view of the room after the redesign. Estimate the dimensions from the photograph's perspective and mark "confidence" honestly as "estimated".
-- x, y, w, h are fractions of the room's width and length, between 0 and 1, origin at the top-left corner of the plan.
-- "features" are the structural things from the survey, placed on the walls. A window or door on a wall should be thin: w or h near 0.02.
-- "furniture" is the redesigned layout — the pieces you are keeping plus the ones you are adding.
-- "cameraAt" is roughly where the photographer stood.
-- Nothing may overlap a doorway's swing, and there must be a walkable route through the room.
 
 imageDirection — 400 to 700 characters describing ONLY what changes visually: wall colour and finish, flooring, the furniture and its materials and colours, textiles, lighting fixtures and their warmth, and decor. Name specific colours and materials. Do NOT mention the camera, the room's shape, the windows, or the doors — those are handled separately and are not yours to describe. Write it as instructions to a photo retoucher, not as a scene description.`;
 }
@@ -250,10 +209,61 @@ export async function designRoom({
     images: [{ base64, mediaType }],
     system: DESIGN_SYSTEM,
     prompt: designPrompt({ survey, intents, previous, instruction, homePalette, taste }),
-    maxTokens: 8192,
+    schema: BOARD_SCHEMA,
+    effort: 'high',
+    maxTokens: 16000,
     label: 'design board',
   });
   return { board: parsed, model };
+}
+
+/* ── 2b. The floor plan ──────────────────────────────────────────────────── */
+
+const FLOOR_SYSTEM =
+  'You draw measured plan views of rooms. You infer dimensions from ' +
+  'perspective, you place openings on the correct walls, and you never block a ' +
+  'door or a window with furniture.';
+
+/**
+ * A plan view of the redesigned room, as normalised rectangles the client draws
+ * as SVG. Separate from the board because the two schemas together exceed what
+ * the API will compile into a sampling grammar — and because a failure here
+ * should cost us the diagram, not the design.
+ */
+export async function planFloor({ base64, mediaType, survey, board }) {
+  const keep = (board?.plan || [])
+    .filter((p) => p.action === 'keep' || p.action === 'add' || p.action === 'move')
+    .map((p) => p.item);
+
+  const prompt = `Draw a plan view of this room as it will be AFTER the redesign.
+
+The survey found these structural features:
+${architectureBrief(survey)}
+Other fixed facts: ${(survey?.fixedFeatures || []).join('; ') || 'none recorded'}
+
+The redesigned room contains: ${keep.join(', ') || 'furnish it as the design implies'}
+
+Layout intent: ${board?.layoutNotes || 'arrange it sensibly for the room'}
+
+RULES
+- Estimate the room's real dimensions in metres from the photograph's perspective. Mark "confidence" as "estimated" unless the photo actually shows a measurement.
+- x, y, w, h are fractions of the room's width and length, between 0 and 1, with the origin at the top-left corner of the plan.
+- "features" are the structural items above, placed against the wall they belong to. A window or door sits ON a wall, so its thin dimension should be about 0.02.
+- "furniture" is the redesigned layout — the pieces being kept plus the ones being added. Give each its real footprint, not a uniform box.
+- Nothing may sit in front of a door's swing or block a window.
+- Leave a walkable route through the room, at least 0.7m wide in real terms.
+- "cameraAt" is roughly where the photographer stood.`;
+
+  const { parsed } = await askForJson({
+    images: [{ base64, mediaType }],
+    system: FLOOR_SYSTEM,
+    prompt,
+    schema: FLOORPLAN_SCHEMA,
+    effort: 'medium',
+    maxTokens: 4000,
+    label: 'floor plan',
+  });
+  return parsed;
 }
 
 /* ── 3. The render prompt ────────────────────────────────────────────────── */
@@ -333,20 +343,15 @@ ${expected || '- every window and door visible in the first image'}
 
 Compare the two images. For each feature, decide whether it survived the edit.
 
-Return ONLY a JSON object:
-{
-  "ok": boolean,
-  "missing": [{ "id": string, "type": string, "problem": "removed" | "covered" | "moved" | "resized" | "altered", "detail": string }],
-  "notes": string
-}
-
 "ok" is true only if every listed feature is still clearly visible, in the same place, at the same size, in the same quantity. A window that became a mirror, a painting, or blank wall counts as "removed". A door hidden behind new furniture counts as "covered". Be strict: if you are unsure whether a feature survived, treat it as missing. Keep "detail" to one short sentence naming what you actually see there now.`;
 
   const { parsed } = await askForJson({
     images: [before, after],
     system: VERIFY_SYSTEM,
     prompt,
-    maxTokens: 1200,
+    schema: FIDELITY_SCHEMA,
+    effort: 'medium',
+    maxTokens: 4000,
     label: 'render check',
   });
   return parsed;

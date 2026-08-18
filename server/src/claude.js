@@ -6,7 +6,7 @@
 // design.js.
 
 const ANTHROPIC_URL = 'https://api.anthropic.com/v1/messages';
-const DEFAULT_MODEL = 'claude-sonnet-4-6';
+const DEFAULT_MODEL = 'claude-opus-5';
 
 class ClaudeError extends Error {
   constructor(message, status = 502) {
@@ -53,15 +53,21 @@ const imageBlock = ({ base64, mediaType }) => ({
  * One Messages API call that must come back as JSON.
  *
  * `images` are placed before the text (image-before-text ordering, which the
- * vision models handle best). `prefill` seeds the assistant turn with "{" so
- * the model cannot open with prose — the single most effective guard against
- * an unparseable response.
+ * vision models handle best), and `schema` is passed as `output_config.format`
+ * so the API constrains generation to the shape we need. That is stronger than
+ * asking nicely in the prompt, and it is the documented replacement for
+ * assistant prefill — current models reject a trailing assistant turn outright.
+ *
+ * Adaptive thinking is on: reading a room and pricing a plan are both jobs
+ * where the model reasoning first measurably beats it answering first.
  */
 export async function askForJson({
   images = [],
   prompt,
   system,
-  maxTokens = 4096,
+  schema,
+  effort = 'high',
+  maxTokens = 8192,
   label = 'request',
 }) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
@@ -73,14 +79,17 @@ export async function askForJson({
   const body = {
     model,
     max_tokens: maxTokens,
+    thinking: { type: 'adaptive' },
+    output_config: {
+      effort,
+      ...(schema ? { format: { type: 'json_schema', schema } } : {}),
+    },
     ...(system ? { system } : {}),
     messages: [
       {
         role: 'user',
         content: [...images.map(imageBlock), { type: 'text', text: prompt }],
       },
-      // Prefill: the reply is forced to continue an open JSON object.
-      { role: 'assistant', content: '{' },
     ],
   };
 
@@ -108,17 +117,24 @@ export async function askForJson({
   }
 
   const data = await res.json();
-  const text = data?.content?.find((b) => b.type === 'text')?.text ?? '';
 
   if (data?.stop_reason === 'max_tokens') {
     throw new ClaudeError(
       `The design model ran out of room mid-response (${label}). Please try again.`,
     );
   }
+  if (data?.stop_reason === 'refusal') {
+    throw new ClaudeError(
+      `The model declined this request (${label}). Try a different photo.`,
+    );
+  }
 
+  // With a schema in play the first text block is guaranteed to be valid JSON,
+  // but parseModelJson stays in the path: it costs nothing and keeps this
+  // working if the schema is ever dropped.
+  const text = data?.content?.find((b) => b.type === 'text')?.text ?? '';
   try {
-    // Put back the "{" the prefill consumed.
-    return { parsed: parseModelJson(`{${text}`), model };
+    return { parsed: parseModelJson(text), model, usage: data?.usage || null };
   } catch {
     throw new ClaudeError(
       `The design model returned a response we could not read (${label}). Please try again.`,
