@@ -267,8 +267,6 @@ async function runRedesign(job) {
 
     return { redesign, roomId: room.id, imageError };
   } catch (err) {
-    // The transaction rolled back, so the asset rows are gone; take their files
-    // with them rather than leaving bytes nothing points at.
     await Promise.all(written.map((key) => storage.remove(key)));
     throw err;
   }

@@ -18,14 +18,7 @@ import StoragePlan from './pages/app/StoragePlan.jsx';
 import Trash from './pages/app/Trash.jsx';
 import Settings from './pages/app/Settings.jsx';
 
-/**
- * Three zones: the public marketing site, public share links, and /app behind
- * RequireAuth.
- *
- * The gate is a UX affordance only — the server independently authenticates
- * every API call and scopes it to the caller's account, so a route reached by
- * other means still returns nothing.
- */
+
 export default function App() {
   return (
     <Routes>
